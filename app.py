@@ -101,3 +101,7 @@ def exported():
     dloads = os.listdir(dloads_dir)
     dloads_src = [f'/exported/{format(i)}' for i in dloads]
     return render_template('exported_vendor.html', dloads=dloads, dloads_src=dloads_src)
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
