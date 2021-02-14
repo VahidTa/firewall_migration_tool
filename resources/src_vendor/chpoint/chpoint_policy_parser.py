@@ -135,8 +135,13 @@ def chpoint_policy(file: str, vendor: str):
         policy_action = row["Action"]
         policy_log = row["Track"]
         policy_app = row["Services & Applications"]
+<<<<<<< HEAD
         source_zone = 'Global'
         destination_zone = 'Global'
+=======
+        source_zone = 'global'
+        destination_zone = 'global'
+>>>>>>> f84b7ed (0.2.0 Web release)
         policy_state = ''
 
         try:
@@ -169,11 +174,19 @@ def chpoint_policy(file: str, vendor: str):
     
         if vendor == 'forti':
             policy_action = forti_translation.get(policy_action, policy_action)
+<<<<<<< HEAD
             if 'any' in policy_src_address:
                 policy_src_address = 'all'
             if 'any' in policy_dst_address:
                 policy_dst_address == 'all'
             if policy_app == 'any':
+=======
+            if 'Any' in policy_src_address:
+                policy_src_address = 'all'
+            if 'Any' in policy_dst_address:
+                policy_dst_address == 'all'
+            if policy_app == 'Any':
+>>>>>>> f84b7ed (0.2.0 Web release)
                 policy_app = 'ALL'
             
             forti = Forti_DST()
@@ -208,6 +221,15 @@ def chpoint_policy(file: str, vendor: str):
                 )
         elif vendor == 'srx':
             policy_action = srx_translation.get(policy_action, policy_action)
+<<<<<<< HEAD
+=======
+            if 'Any' in policy_src_address:
+                policy_src_address = 'any'
+            if 'Any' in policy_dst_address:
+                policy_dst_address == 'any'
+            if policy_app == 'Any':
+                policy_app = 'any'
+>>>>>>> f84b7ed (0.2.0 Web release)
             srx = SRX_DST()
             srx.policy(
                 policy_name,
