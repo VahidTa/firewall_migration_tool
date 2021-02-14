@@ -1,0 +1,102 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #bbb;
+}
+
+#container {
+    margin: 30px auto;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.form-wrap {
+    background-color: white;
+    padding: 15px 25px;
+    color: #333;
+    border: solid 2px black;
+    border-radius: 5px;
+}
+
+p {
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.form-wrap .form-group {
+    margin-top: 15px;
+}
+
+
+.form-wrap .form-group label{
+    display: block;
+    color: #111;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-wrap .remote, .form-wrap .protocol {
+    display: none;
+}
+
+.form-wrap .config-box{
+    display: none;
+}
+
+.form-wrap .form-group input, select{
+    width: 100%;
+    padding: 10px;
+    border: #ddd 1px solid;
+    border-radius: 5px;
+}
+
+.form-wrap button{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: orange;
+    color: black;
+    font-weight: bold;
+}
+
+nav {
+    max-width: 100%;
+    background-color: #444;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav p {
+    margin: 15px;
+    color: orange;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    margin: 15px;
+    color: orange;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: large;
+}
+
+nav .linked {
+    display: flex;
+
+}
+
+.form-wrap .config-box label, .form-wrap .config-box input{
+    width:auto;
+    display: unset;
+}

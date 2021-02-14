@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>FW Migration Tool</title>
+</head>
+<body>
+    <nav>
+        <div>
+            <p>Firewall Migration Tool</p>
+        </div>
+        <div class="linked">
+            <a href="/exported">Exported</a>
+            <a href="https://github.com/VahidTa/firewall_migration_tool" target="_blank" rel="noopener noreferrer">Help</a>
+        </div>
+    </nav>
+    <div id="container">
+        <div class="form-wrap">
+            <p>Fill the form</p>
+            <form method=post enctype=multipart/form-data>
+                <div class="form-group">
+                    <label for="src_vendor">Source Vendor</label>
+                    <select name="src_vendor" id="src_vendor" onchange="updateSelect(this, 'dst_vendor')" required>
+                        <option value="">Select</option>
+                        <option value="srx">Juniper SRX</option>
+                        <option value="forti">Fortigate</option>
+                        <option value="palo">Paloalto</option>
+                        <option value="asa">Cisco ASA</option>
+                        <option value="chpoint">Check Point</option>
+                        <!-- <option value="aws">AWS Firewall</option>
+                        <option value="azure">Azure Firewall</option> -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dst_vendor">Destionation Vendor</label>
+                    <select name="dst_vendor" id="dst_vendor" onchange="updateSelect(this, 'src_vendor')" required>
+                        <option value="">Select</option>
+                        <option value="srx">Juniper SRX</option>
+                        <option value="forti">Fortigate</option>
+                        <option value="palo">Paloalto</option>
+                        <option value="asa">Cisco ASA</option>
+                        <option value="chpoint">Check Point</option>
+                        <!-- <option value="aws">AWS Firewall</option>
+                        <option value="azure">Azure Firewall</option> -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type of conversion</label>
+                    <select name="type" id="type" onchange="ChangeDropdowns(this.value);">
+                        <option value="file">File</option>
+                        <option value="netconf">Netconf</option>
+                        <!-- <option value="rest">Rest API</option> -->
+                    </select>
+                </div>
+                <div class="form-group remote">
+                    <label>Source Config Parameteres for related protocol</label>
+                    <label>----------------------------------------------</label>
+                    <label for="host">Firewall address</label>
+                    <input type="text" name="host" id="host">
+                </div>
+                <div class="form-group remote">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                </div>
+                <div class="form-group remote">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </div>
+                
+                <div class="form-group protocol">
+                    <label for="protocol">Protocol</label>
+                    <select name="protocol" id="protocol">
+                        <option value="">Select</option>
+                        <option value="http">HTTP</option>
+                        <option value="https">HTTPS</option>
+                    </select>
+                </div>
+                <div class="form-group remote">
+                    <label for="port">Port</label>
+                    <input type="text" name="port" id="port">
+                </div>
+                <div class="form-group">
+                    <label for="action">Action</label>
+                    <select name="action" id="action" onchange="configOptions(this.value);">
+                        <option value="policy">Policy</option>
+                        <option value="config">Other Configs</option>
+                    </select>
+                </div>
+                <div class="form-group config-box" id="config-box">
+                    <div>                        
+                        <input type="checkbox" name="acts" value="address">
+                        <label for="address">Address Book</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="acts" value="service">
+                        <label for="service">Custom Service</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="acts" value="service_set">
+                        <label for="service_set">Custom Service set</label>
+                    </div>
+                    <!-- <div>
+                        <input type="checkbox" name="acts" value="zone">
+                        <label for="zone">Zone</label>
+                    </div> -->
+                </div>
+                <div class="form-group">
+                    <input id="file" type=file name=file>
+                    {% for mesg in get_flashed_messages() %}
+                        <p>{{ mesg }}</p>
+                        {% endfor %}
+                </div>
+                <button type=submit class="btn">Convert!</button>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <form action="https://www.paypal.com/donate" method="post" target="_blank">
+            <input type="hidden" name="business" value="tavajjohi@outlook.com" />
+            <input type="hidden" name="currency_code" value="USD" />
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+            <img alt="" src="https://www.paypal.com/en_AZ/i/scr/pixel.gif" width="1" height="1" />
+            </form>
+    </footer>
+</body>
+</html>

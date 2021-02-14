@@ -1,29 +1,82 @@
 # firewall_migration_tool
-It supports only SRX -> Fortigate.
+It supports:
+  - SRX -> Fortigate (policy and objects)
+  - SRX -> ASA (objects)
+  - SRX -> Palo Alto (policy and objects)
+  - SRX -> Check Point (policy and objects)
+  - Check Point -> Fortigate (policy and address objects)
+  - Check Point -> Palo Alto (policy and address objects)
+  - Check Point -> ASA (address objects)
+  - Check Point -> SRX (address objects)
 
-Use Python 3.x
+python 3.8 and later.
 
 ## Instruction
 
-SRX:<br />
-  It uses XML format to convert configs and policies. Reason that policies are extracted from config is in configuration output of SRX, it does not provide **rule order** . So, from "show security" you can find orders.
+This version is based on Flask and JS to provide Web UI for conversion of firewall objects and policies.
 
-  Also, this tool **does not** support Zone, Interfaces, and NAT. Please note that you must create interfaces and Zones before using output of policy.
+
+### SRX
+  This tool is tested on Junos 12.x , 15.x , 17.x .
+  It uses XML format to convert configs and policies.
+  Policies can not be extracted from SRX configuration output, because it does not provide **rule order** . So, from `show security policies` it can find out rule/policy orders.
+
+  Also, this tool **does not** support Zone, Interfaces, and NAT. Please note that you must create interfaces and Zones before using policy output.
 
 Here are steps to provide correct output file from SRX:
 
 - __Policy__:
-  1. Login to SRX and execute `show security | display xml`
+  1. Login to SRX and execute `show security policies | display xml`
   2. Copy the output into file.
     1. Make sure only XML output is in the file.
 - __General Config__:
-  1. Login to SRX and execute `show configuration| display xml`
+  1. Login to SRX and execute `show configuration | display xml`
   2. Copy the output into file.
     1. Make sure only XML output is in the file.
 
-Use `$python3.8 app.py -h` to see help.
+Notes:
+- __Palo Alto__:
+  - May not allow more than 100 inputs in one copy/paste. So partition the output in clipboard.
+  - Applications are pre-defined as `any`. So, if you need to change it you must edit the output.
+- __Check Point__:
+  * From release R80 and later supports.
+  * API must be enabled. Please refer to Checkpoint documentation. 
+  * Use below instructions:
+    * For objects, ssh to device and go to expert mode:
+        * Network and Service Objects will force to replace if there is existing object with the same name.
+        * use `mgmt_cli add host --batch network_objects_host.csv` for host objects.
+        * use `mgmt_cli add network --batch network_objects_network.csv` for network with subnets.
+        * use `mgmt_cli add group --batch network_groups.csv` for object group objects.
+        * use `mgmt_cli set group --batch network_group_members.csv` for object group members.
+        * use `mgmt_cli add service-group --batch service_groups.csv` for service group members.
+        * use `mgmt_cli set service-group --batch service_groups_members.csv` for service group members.
+  
+    * For Policies:
+        * Set `username` and `password` inside the policies.txt.
+        * SSH to decvice and go to expert mode. Then paste output policy.
+        * This method using `sid` for authentication.
+        * Because of the platform, you must paste rules by grouping 3 or 4 rules for each copy.
+        * Please note that about per 100 lines there is a `publish` action.
 
-## Example
-- Convert Policy: `python3 app.py --file policy.txt --action policy`
+Any predefined services are not included in Firewall Migration Tool, or not defined on destionation vendor (e.g. Palo Alto), will be same as SRX platform. For example, `junos-who` may will be the same on output of conversion.
 
-- Convert Configs: `python3 app.py --file config.txt --action config`
+### Check Point
+  This tool is tested on SmartConsle __csv__  policy and address object exporting format.
+  Because of insufficient information on csv output, Service part does not have protocol part to understand wheter it is TCP/UDP and etc.
+
+  Here are steps to provide correct output file from Check Point:
+  - __Policy__:
+  1. Login to SmartConsole, go to `Security Policies`.
+  2. Click on actions and select export.
+
+  - __Objects__:
+  1. Login to SmartConsole, on the right panel find 3 dots on toolbar and click.
+  2. Select Address section from left selection part
+  3. Click actions and select export.
+
+## Troubleshoot
+* Check file content before upload it for conversion.
+* SRX conten must be pure XML and Checkpoint must be CSV formatted.
+
+## Feedback
+Please share your experience with me about Firewall Migration Tool through [@tavajjohi](https://twitter.com/tavajjohi "twitter") on twitter.

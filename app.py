@@ -1,47 +1,103 @@
-import argparse
 import os
-import sys
 
-from resources.srx.srx_config_converter import SRXConfig
-from resources.srx.srx_policy_convert import srx_policy
+from flask import Flask, flash, request, redirect, url_for, send_from_directory
+from flask.templating import render_template
+from werkzeug.utils import secure_filename
 
-convert_parser = argparse.ArgumentParser(description='SRX source configuration', allow_abbrev=False)
-convert_parser.add_argument('--file',
-                       '-f',
-                       metavar='',
-                       help='The file fullname inside <./configs> (e.g. config.log)',
-                       required=True
-                       )
-convert_parser.add_argument('--action',
-                       '-a',
-                       metavar='',
-                       help='Select action <policy|config> based on <Config file>',
-                       required=True)
+from resources.protocols.nc_conn import NcMGR
+from resources.src_vendor.srx.srx import srx_main
+from resources.src_vendor.chpoint.chpoint import chpoint_main
 
-args = convert_parser.parse_args()
 
-if args.action == 'policy':
-    try:
-        srx_policy(args.file)
-        print('Enjoy!')
-        print('Please find output on <./exported> path')
-    except FileNotFoundError:
-        print('Invalid Input or maybe there is no file in <./Conifg> path, try again!')
-    except:
-        print('Make sure policy is xml formatted with proper <show> command. Please see instruction on Github')
+UPLOAD_FOLDER = 'configs/'
+ALLOWED_EXTENSIONS = {'txt', 'log', 'csv'}
 
-elif args.action == 'config':
-    try:
-        actions = SRXConfig(args.file)
-        actions.address_book
-        actions.custom_service
-        actions.custom_service_set
-        print('Enjoy!')
-        print('Please find output on <./exported> path')
-    except FileNotFoundError:
-        print('Invalid Input or maybe there is no file in <./Conifg> path, try again!')
-    except:
-        print('Make sure config is xml formatted. Please see instruction on Github')
-else:
-    raise ValueError('Please check "-a" action (policy|config)')
+app = Flask(__name__, template_folder='resources/web/templates', static_folder='resources/web/static')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/', methods=['GET', 'POST'])
+def main():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        src_vendor = request.form.get('src_vendor')
+        if request.form.get('type') == 'netconf':
+            if src_vendor == 'srx':
+                action = request.form.get('action')
+                nc_client = NcMGR()
+                host = request.form.get('host')
+                username = request.form.get('username')
+                password = request.form.get('password')
+                port = request.form.get('port')
+                dst_vendor = request.form.get('dst_vendor')
+                cfg = nc_client.junos_nc_conn(action, host, username, password, port, 'junos')
+                if not cfg:
+                    flash('Authentication error')
+                    return redirect(request.url)
+                elif cfg == 'other':
+                    flash('Connection problem, please check network and info.')
+                    return redirect(request.url)
+                else:
+                    srx_main(action, cfg, dst_vendor)
+                    return redirect(url_for('get_file')) 
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if src_vendor in ['srx', 'chpoint']:
+                acts = request.form.getlist('acts')
+                action = request.form.get('action')
+                if action == 'config' and not acts:
+                    flash('Please select one checkbox!')
+                    return redirect(request.url)
+
+                dst_vendor = request.form.get('dst_vendor')
+                if src_vendor == 'srx':
+                    result = srx_main(action, filename, dst_vendor, acts)
+                elif src_vendor == 'chpoint':
+                    result = chpoint_main(action, filename, dst_vendor, acts)
+                if not result:
+                    flash('Something is wrong! check again')
+                    return redirect(request.url)
+                if result == 'no':
+                    flash('This operation is not supported for this vendor!')
+                    return redirect(request.url)
+                return redirect(url_for('get_file', dirname=str(dst_vendor)))
+            else:
+                flash('This conversion not supported yet.')
+                return redirect(request.url)
+
+        else:
+            flash('File not supported. (txt, log, csv)')
+            return redirect(request.url)
+    return render_template('home.html')
+
+@app.route('/exported/<dirname>/') # this is a job for GET, not POST
+def get_file(dirname):
+
+    dloads_dir = f'exported/{dirname}'
+    dloads = os.listdir(dloads_dir)
+    dloads_src = [f'/exported/{dirname}/{format(i)}' for i in dloads]
+    return render_template('files.html', dloads=dloads, dloads_src=dloads_src, dirname=dirname)
+
+
+@app.route('/exported/<dirname>/<filename>')
+def download(dirname, filename):
+    return send_from_directory(f'exported/{dirname}', filename)
+
+
+@app.route('/exported/')
+def exported():
+    dloads_dir = 'exported/'
+    dloads = os.listdir(dloads_dir)
+    dloads_src = [f'/exported/{format(i)}' for i in dloads]
+    return render_template('exported_vendor.html', dloads=dloads, dloads_src=dloads_src)
