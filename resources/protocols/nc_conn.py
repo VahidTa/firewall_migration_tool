@@ -17,7 +17,7 @@ class NcMGR:
     # def junos_nc_conn(self, host: str, port: str, device_params: str, ):
     def junos_nc_conn(self, action: str, host: str, username: str, password: str, port: str, device_params: str):
         if action == 'policy':
-            action = 'security policies'
+            action = 'security policies | display xml'
         elif action == 'config':
             action = 'configuration | display xml'
         try:

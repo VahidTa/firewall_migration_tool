@@ -6,9 +6,6 @@ chardet==4.0.0
 click==7.1.2
 cryptography==3.3.1
 Flask==1.1.2
-Flask-JWT==0.3.2
-Flask-JWT-Extended==3.25.0
-Flask-RESTful==0.3.8
 idna==2.10
 ipaddress==1.0.23
 itsdangerous==1.1.0
@@ -20,12 +17,10 @@ numpy==1.20.1
 pandas==1.2.2
 paramiko==2.7.2
 pycparser==2.20
-PyJWT==1.7.1
 PyNaCl==1.4.0
 python-dateutil==2.8.1
 pytz==2020.4
 requests==2.25.1
 six==1.15.0
 urllib3==1.26.3
-Werkzeug==1.0.1
 xmltodict==0.12.0
