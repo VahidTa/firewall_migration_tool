@@ -84,7 +84,6 @@ class ASA_DST:
     
     def policy(*args):
         """Not Implemented"""
-        return
         policy_name = args[1]
         source_zone = args[2]
         destination_zone = args[3]
@@ -95,4 +94,75 @@ class ASA_DST:
         policy_state = args[8]
         policy_action = args[9]
         policy_id = args[10]
+
+        the_path = 'exported/asa/policies.txt'
+        if policy_state != 'inactive':
+            policy_state = ''
+        if policy_log:
+            policy_log = 'log'
+        else:
+            policy_log = ''
+        if ' ' in policy_src_address:
+            src_group_name = f'DM_INLINE_NETWORK_111{policy_id}'
+            with open(the_path, 'a') as output:
+                output.write(f'object-group network {src_group_name}\n')
+                for src in policy_src_address.split(' '):
+                    output.write(f' network-object object {src}\n')
+                output.write(' exit\n\n')
+            policy_src_address = f'object-group {src_group_name}'
+        else:
+            policy_src_address = f'object {policy_src_address}'
+        if ' ' in policy_dst_address:
+            dst_group_name = f'DM_INLINE_NETWORK_222{policy_id}'
+            with open(the_path, 'a') as output:
+                output.write(f'object-group network {dst_group_name}\n')
+                for dst in policy_dst_address.split(' '):
+                    output.write(f' network-object object {dst}\n')
+                output.write(' exit\n\n')
+            policy_dst_address = f'object-group {dst_group_name}'
+        else:
+            policy_dst_address = f'object {policy_dst_address}'
+
+        if ' ' in policy_app:
+            app_group_name = f'DM_INLINE_SERVICE_333{policy_id}'
+            with open(the_path, 'a') as output:
+                output.write(f'object-group service {app_group_name}\n')
+                for dst in policy_app.split(' '):
+                    if isinstance(dst, (list)):
+                        if dst[1] == 'na':
+                            output.write(f' service-object {dst[0]}\n')
+                        else:
+                            dst = f'{dst[0]} destionation eq {dst[1]}'
+                            output.write(f' service-object {dst}\n')
+                    else:
+                        output.write(f' service-object object {dst}\n')
+            policy_app = f'object-group {app_group_name}'
+        elif isinstance(policy_app, (list)):
+            app_group_name = f'DM_INLINE_SERVICE_333{policy_id}'
+            with open(the_path, 'a') as output:
+                output.write(f'object-group service {app_group_name}\n')
+                for dst in policy_app:
+                    if isinstance(dst, (list)):
+                        if dst[1] == 'na':
+                            output.write(f' service-object {dst[0]}\n')
+                        else:
+                            dst = f'{dst[0]} destionation eq {dst[1]}'
+                            output.write(f' service-object {dst}\n')
+                    else:
+                        output.write(f' service-object object {dst}\n')
+            policy_app = f'object-group {app_group_name}'
+
+        if (isinstance(policy_app, (list)) == False) and ('DM_INLINE_SERVICE_' in policy_app) == False:
+            policy_app = f'object {policy_app}'
+        # if ('DM_INLINE_SERVICE_' in policy_app) == False:
+        #     policy_app = f'object {policy_app}'
+
+        if isinstance(policy_app, (list)):
+            with open('exported/asa/policies.txt', 'a') as output:
+                output.write(f'access-list global_access line {policy_id} extended {policy_action} {policy_app[0]} {policy_src_address} {policy_dst_address} eq {policy_app[1]} {policy_log} {policy_state}\n\n')
+        else:
+            with open('exported/asa/policies.txt', 'a') as output:
+                output.write(f'access-list global_access line {policy_id} extended {policy_action} {policy_app} {policy_src_address} {policy_dst_address} {policy_log} {policy_state}\n\n')
+
+
 

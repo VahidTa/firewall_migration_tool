@@ -5,6 +5,7 @@ import os
 from resources.dst_vendor.dst_palo import Palo_DST
 from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
+from resources.dst_vendor.dst_asa import ASA_DST
 
 forti_translation = {
     'permit': 'accept',
@@ -86,16 +87,13 @@ chpoint_translation = {
 }
 
 asa_translation = {
-    'permit': 'accept',
-    'deny': 'drop',
-    'disabled': 'false',
-    'enabled': 'true',
+    'disabled': 'inactive',
     'junos-ftp': ['tcp', 'ftp'],
     'junos-tftp': ['udp', 'tftp'],
     'junos-rtsp': ['tcp', 'rtsp'],
     'junos-ssh': ['tcp', 'ssh'],
     'junos-telnet': ['tcp', 'telnet'],
-    'junos-ping': 'icmp',
+    'junos-ping': ['icmp', 'na'],
     'junos-ntp': ['udp', 'ntp'],
     'junos-nntp': ['tcp','nntp'],
     'junos-http': ['tcp', 'http'],
@@ -114,9 +112,9 @@ asa_translation = {
     'junos-internet-locator-service': ['tcp', 'ldap'],
     'junos-who': ['udp', 'who'],
     'junos-cifs': ['tcp-udp', 'cifs'],
-    'junos-ospf': 'ospf',
-    'junos-tcp-any': 'tcp',
-    'junos-udp-any': 'udp',
+    'junos-ospf': ['ospf', 'na'],
+    'junos-tcp-any': ['tcp', 'na'],
+    'junos-udp-any': ['udp', 'na'],
 }
 
 def srx_policy(file: str, vendor: str):
@@ -267,7 +265,10 @@ def srx_policy(file: str, vendor: str):
             if policy_dst_list:
                 policy_dst_address = ' '.join(policy_dst_list)
             if policy_app_list:
-                policy_app = ' '.join(policy_app_list)
+                try:
+                    policy_app = ' '.join(policy_app_list)
+                except:
+                    policy_app = policy_app_list
             
             if vendor == 'forti':
                 policy_state = forti_translation.get(policy_state, policy_state)
@@ -294,7 +295,20 @@ def srx_policy(file: str, vendor: str):
                     )
                 
             elif vendor == 'asa':
-                pass
+                policy_action = asa_translation.get(policy_action, policy_action)
+                asa = ASA_DST()
+                asa.policy(
+                    policy_name,
+                    source_zone,
+                    destination_zone,
+                    policy_src_address,
+                    policy_dst_address,
+                    policy_app,
+                    policy_log,
+                    policy_state,
+                    policy_action,
+                    policy_id
+                    )
             elif vendor == 'palo':
                 policy_action = palo_translation.get(policy_action, policy_action)
                 palo = Palo_DST()

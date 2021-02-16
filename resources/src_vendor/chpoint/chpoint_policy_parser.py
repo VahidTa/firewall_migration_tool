@@ -4,6 +4,7 @@ import pandas as pd
 from resources.dst_vendor.dst_palo import Palo_DST
 from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_srx import SRX_DST
+from resources.dst_vendor.dst_asa import ASA_DST
 
 forti_translation = {
     'Accept': 'accept',
@@ -79,16 +80,14 @@ srx_translation = {
 }
 
 asa_translation = {
-    'Accept': 'accept',
-    'deny': 'drop',
-    'disabled': 'false',
-    'enabled': 'true',
+    'Accept': 'permit',
+    'disabled': 'inactive',
     'ftp': ['tcp', 'ftp'],
     'tftp': ['udp', 'tftp'],
     'rtsp': ['tcp', 'rtsp'],
     'ssh': ['tcp', 'ssh'],
     'telnet': ['tcp', 'telnet'],
-    'echo-request': 'icmp',
+    'echo-request': ['icmp', 'na'],
     'ntp': ['udp', 'ntp'],
     'nntp': ['tcp','nntp'],
     'http': ['tcp', 'http'],
@@ -106,9 +105,9 @@ asa_translation = {
     'ldap': ['tcp', 'ldap'],
     'who': ['udp', 'who'],
     'CIFS': ['tcp-udp', 'cifs'],
-    'ospf': 'ospf',
-    'unknown_protocol_tcp': 'tcp',
-    'unknown_protocol_udp': 'udp',
+    'ospf': ['ospf', 'na'],
+    'unknown_protocol_tcp': ['tcp', 'na'],
+    'unknown_protocol_udp': ['udp', 'na'],
 }
 
 def chpoint_policy(file: str, vendor: str):
@@ -150,7 +149,7 @@ def chpoint_policy(file: str, vendor: str):
                 elif vendor == 'srx':
                     policy_app = srx_translation.get(app, app)
                 elif vendor == 'asa':
-                    policy_app = asa_translation.get(app, policy_app)
+                    policy_app = asa_translation.get(app, app)
                 new_list.append(policy_app)
             policy_app = ' '.join(new_list)
         except:
@@ -191,7 +190,26 @@ def chpoint_policy(file: str, vendor: str):
                 )
             
         elif vendor == 'asa':
-            pass
+            policy_action = asa_translation.get(policy_action, policy_action)
+            if 'Any' in policy_src_address:
+                policy_src_address = 'any'
+            if 'Any' in policy_dst_address:
+                policy_dst_address == 'any'
+            if policy_app == 'Any':
+                policy_app = 'any'
+            asa = ASA_DST()
+            asa.policy(
+                policy_name,
+                source_zone,
+                destination_zone,
+                policy_src_address,
+                policy_dst_address,
+                policy_app,
+                policy_log,
+                policy_state,
+                policy_action,
+                policy_id
+                )
         elif vendor == 'palo':
             policy_action = palo_translation.get(policy_action, policy_action)
             palo = Palo_DST()

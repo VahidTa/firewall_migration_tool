@@ -7,9 +7,6 @@ from resources.src_vendor.srx.srx_policy_convert import srx_policy
 def srx_main(action: str, cfg: str, vendor: str, acts: List[str]) -> bool:
     try:
         if action == 'policy':
-            if vendor == 'asa':
-                return 'no'
-            
             srx_policy(cfg, vendor)
         
         elif action == 'config':

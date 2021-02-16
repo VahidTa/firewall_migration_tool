@@ -7,9 +7,6 @@ from resources.src_vendor.chpoint.chpoint_policy_parser import chpoint_policy
 def chpoint_main(action: str, cfg: str, vendor: str, acts: List[str]) -> bool:
     try:
         if action == 'policy':
-            if vendor == 'asa':
-                return 'no'
-            
             chpoint_policy(cfg, vendor)
         
         elif action == 'config':

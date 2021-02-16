@@ -1,13 +1,13 @@
 # firewall_migration_tool
 It supports:
   - SRX -> Fortigate (policy and objects)
-  - SRX -> ASA (objects)
+  - SRX -> ASA (global policyobjects)
   - SRX -> Palo Alto (policy and objects)
   - SRX -> Check Point (policy and objects)
-  - Check Point -> Fortigate (policy and address objects)
-  - Check Point -> Palo Alto (policy and address objects)
-  - Check Point -> ASA (address objects)
-  - Check Point -> SRX (address objects)
+  - Check Point -> Fortigate (policy, address objects)
+  - Check Point -> Palo Alto (policy, address objects)
+  - Check Point -> ASA (global policy, address objects)
+  - Check Point -> SRX (global policy, address objects)
 
 python 3.8 and later.
 
