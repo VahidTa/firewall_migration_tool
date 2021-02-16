@@ -76,7 +76,7 @@ Any predefined services are not included in Firewall Migration Tool, or not defi
 
 ## Troubleshoot
 * Check file content before upload it for conversion.
-* SRX conten must be pure XML and Checkpoint must be CSV formatted.
+* SRX content must be pure XML and Checkpoint must be CSV formatted.
 
 ## Feedback
 Please share your experience with me about Firewall Migration Tool through [@tavajjohi](https://twitter.com/tavajjohi "twitter") on twitter.
