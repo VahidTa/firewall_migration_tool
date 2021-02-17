@@ -27,6 +27,7 @@ def main():
         src_vendor = request.form.get('src_vendor')
         if request.form.get('type') == 'netconf':
             if src_vendor == 'srx':
+                acts = request.form.getlist('acts')
                 action = request.form.get('action')
                 nc_client = NcMGR()
                 host = request.form.get('host')
@@ -42,8 +43,8 @@ def main():
                     flash('Connection problem, please check network and info.')
                     return redirect(request.url)
                 else:
-                    srx_main(action, cfg, dst_vendor)
-                    return redirect(url_for('get_file')) 
+                    srx_main(action, cfg, dst_vendor, acts)
+                    return redirect(url_for('get_file', dirname=str(dst_vendor))) 
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename

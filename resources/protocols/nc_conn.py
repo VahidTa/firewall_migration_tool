@@ -23,10 +23,10 @@ class NcMGR:
         try:
             with self._conn_mgr(host, username, password, port, device_params) as m:
                 result = m.command(f'show {action}')
-            with open('configs/nc_fw_result.log', 'w') as f:
-                f.write(result)
-            return 'nc_fw_result.log'
         except transport.AuthenticationError:
             return False
         except:
             return 'other'
+        with open('configs/nc_fw_result.log', 'w') as f:
+            f.write(result)
+        return 'nc_fw_result.log'
