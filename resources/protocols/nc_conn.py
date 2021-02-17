@@ -28,5 +28,5 @@ class NcMGR:
         except:
             return 'other'
         with open('configs/nc_fw_result.log', 'w') as f:
-            f.write(result)
+            f.write(str(result))
         return 'nc_fw_result.log'
