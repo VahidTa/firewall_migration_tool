@@ -5,9 +5,10 @@ from flask.templating import render_template
 from werkzeug.utils import secure_filename
 
 from resources.protocols.nc_conn import NcMGR
-from resources.src_vendor.srx.srx import srx_main
-from resources.src_vendor.chpoint.chpoint import chpoint_main
+from resources.parser import main_parser
+from resources import app_logger
 
+logger = app_logger()
 
 UPLOAD_FOLDER = 'configs/'
 ALLOWED_EXTENSIONS = {'txt', 'log', 'csv'}
@@ -35,6 +36,7 @@ def main():
                 password = request.form.get('password')
                 port = request.form.get('port')
                 dst_vendor = request.form.get('dst_vendor')
+                logger.info(f'Netconf started for {host} on port {port} ...')
                 cfg = nc_client.junos_nc_conn(action, host, username, password, port, 'junos')
                 if not cfg:
                     flash('Authentication error')
@@ -43,8 +45,13 @@ def main():
                     flash('Connection problem, please check network and info.')
                     return redirect(request.url)
                 else:
-                    srx_main(action, cfg, dst_vendor, acts)
+                    logger.info('Conversion started ...')
+                    main_parser(action, cfg, src_vendor, dst_vendor, acts)
+                    logger.info(f'Creating files and links for {dst_vendor}')
                     return redirect(url_for('get_file', dirname=str(dst_vendor))) 
+            else:
+                flash(f'Not supported for {src_vendor}!')
+                return redirect(request.url)
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
@@ -62,16 +69,18 @@ def main():
                     return redirect(request.url)
 
                 dst_vendor = request.form.get('dst_vendor')
-                if src_vendor == 'srx':
-                    result = srx_main(action, filename, dst_vendor, acts)
-                elif src_vendor == 'chpoint':
-                    result = chpoint_main(action, filename, dst_vendor, acts)
+
+                logger.info('Conversion started ...')
+                result = main_parser(action, filename, src_vendor, dst_vendor, acts)
+                
                 if not result:
                     flash('Something is wrong! check again')
                     return redirect(request.url)
                 if result == 'no':
-                    flash('This operation is not supported for this vendor!')
+                    flash('The operation is not supported for this vendor!')
                     return redirect(request.url)
+                logger.info(f'Creating files and links for {dst_vendor}')
+                logger.info(50*'=')
                 return redirect(url_for('get_file', dirname=str(dst_vendor)))
             else:
                 flash('This conversion not supported yet.')
@@ -84,7 +93,6 @@ def main():
 
 @app.route('/exported/<dirname>/') # this is a job for GET, not POST
 def get_file(dirname):
-
     dloads_dir = f'exported/{dirname}'
     dloads = os.listdir(dloads_dir)
     dloads_src = [f'/exported/{dirname}/{format(i)}' for i in dloads]

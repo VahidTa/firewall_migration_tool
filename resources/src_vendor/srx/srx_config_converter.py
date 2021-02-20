@@ -11,6 +11,7 @@ from resources.dst_vendor.dst_palo import Palo_DST
 from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
+from resources.src_vendor.srx.srx_policy_convert import srx_policy
 
 palo = Palo_DST()
 forti = Forti_DST()
@@ -213,6 +214,10 @@ class SRX_Cfg:
                     palo.address_set(address_set_name, address_name, address_set_desc)
                 elif self.vendor == 'chpoint':
                     chpoint.address_set(address_set_name, address_name_list, address_set_desc)
+    
+    @property
+    def policy(self):
+        srx_policy(self.cfg_file, self.vendor)
     
     @property
     def zone(self):

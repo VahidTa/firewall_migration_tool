@@ -5,6 +5,7 @@ from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_palo import Palo_DST
 from resources.dst_vendor.dst_srx import SRX_DST
+from resources.src_vendor.chpoint.chpoint_policy_parser import chpoint_policy
 from resources.ip_address_converter.netmask_convereter import prefixer
 
 
@@ -60,6 +61,10 @@ class CHP_CFG:
                 palo.address(address_name, address_ip, address_description)
             elif self.vendor == 'srx':
                 srx.address(address_name, address_ip, address_description)
+    
+    @property
+    def policy(self):
+        chpoint_policy(self.cfg_file, self.vendor)
     
     @property
     def delete(self):

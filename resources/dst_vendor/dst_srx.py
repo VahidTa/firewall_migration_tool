@@ -72,14 +72,14 @@ class SRX_DST:
                 output.write(f'set global policy {policy_name} match destination-address [ {policy_src_address} ]\n')
                 output.write(f'set global policy {policy_name} match application [ {policy_src_address} ]\n')
                 if policy_log:
-                    output.write(f'set global policy {policy_name} then session-close session-init \n')
+                    output.write(f'set global policy {policy_name} then log session-close session-init \n')
                 output.write(f'set global policy {policy_name} then  {policy_action} \n\n')
             else:
                 output.write(f'set from-zone {source_zone} to-zone {destination_zone} policy {policy_name} match source-address [ {policy_src_address} ]\n')
                 output.write(f'set from-zone {source_zone} to-zone {destination_zone} policy {policy_name} match destination-address [ {policy_dst_address} ]\n')
                 output.write(f'set from-zone {source_zone} to-zone {destination_zone} policy {policy_name} match application [ {policy_app} ]\n')
                 if policy_log:
-                    output.write(f'set from-zone {source_zone} to-zone {destination_zone} policy {policy_name} then session-close session-init \n')
+                    output.write(f'set from-zone {source_zone} to-zone {destination_zone} policy {policy_name} then log session-close session-init \n')
                 output.write(f'set from-zone {source_zone} to-zone {destination_zone} policy {policy_name} then {policy_action}\n\n')
 
         

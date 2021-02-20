@@ -1,5 +1,10 @@
+import logging
+
 from ncclient import manager
 from ncclient import transport
+
+
+logger = logging.getLogger('fwmig.nc')
 
 class NcMGR:
 
@@ -24,9 +29,12 @@ class NcMGR:
             with self._conn_mgr(host, username, password, port, device_params) as m:
                 result = m.command(f'show {action}')
         except transport.AuthenticationError:
+            logger.warning(f'Authentication error for {username} on {host}:{port}')
             return False
         except:
+            logger.warning('Something went wrong with connection or receiving data.')
             return 'other'
         with open('configs/nc_fw_result.log', 'w') as f:
+            logger.info('Writing result to the file ...')
             f.write(str(result))
         return 'nc_fw_result.log'
