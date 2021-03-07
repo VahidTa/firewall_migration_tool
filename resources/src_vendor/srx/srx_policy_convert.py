@@ -276,9 +276,11 @@ def srx_policy(file: str, vendor: str):
                 if 'any' in policy_src_address:
                     policy_src_address = 'all'
                 if 'any' in policy_dst_address:
-                    policy_dst_address == 'all'
+                    policy_dst_address = 'all'
                 if policy_app == 'any':
                     policy_app = 'ALL'
+                if len(policy_name) > 34:
+                    policy_name = policy_name[:34]
                 
                 forti = Forti_DST()
                 forti.policy(

@@ -1,9 +1,9 @@
 # firewall_migration_tool
 It supports:
-  - SRX -> Fortigate (policy and objects)
-  - SRX -> ASA (global policyobjects)
-  - SRX -> Palo Alto (policy and objects)
-  - SRX -> Check Point (policy and objects)
+  - SRX -> Fortigate (policy, objects)
+  - SRX -> ASA (global policy, objects)
+  - SRX -> Palo Alto (policy, objects)
+  - SRX -> Check Point (policy, objects)
   - Check Point -> Fortigate (policy, address objects)
   - Check Point -> Palo Alto (policy, address objects)
   - Check Point -> ASA (global policy, address objects)
