@@ -103,6 +103,8 @@ class Forti_DST:
             output.write(f'set service {policy_app}\n')
             if policy_log:
                 output.write(f'set logtraffic all\n')
+            if 'junos' in policy_app:
+                output.write(f'set comments "Error, please check service for correction!"\n')
             output.write(f'set status {policy_state}\n')
             output.write('set schedule always\n')
             output.write('next\n\n')

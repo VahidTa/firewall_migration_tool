@@ -1,4 +1,4 @@
-# firewall_migration_tool
+# Firewall Migration Tool
 It supports:
   - SRX -> Fortigate (policy, objects)
   - SRX -> ASA (global policy, objects)
@@ -11,17 +11,19 @@ It supports:
 
 python 3.8 and later.
 
+## ⚠️Warning:
+  This tool **does not** support Zone, Interfaces, and NAT conversion yet. Please note that you must create interfaces and Zones before using policy output.
+
 ## Instruction
 
-This version is based on Flask and JS to provide Web UI for conversion of firewall objects and policies.
+This Tool is based on Flask and JS to provide Web UI for conversion of firewall objects and policies.
 
 
-### SRX
-  This tool is tested on Junos 12.x , 15.x , 17.x .
+### __SRX__
+  This tool is tested on Junos 12.x , 15.x , 18.x .
   It uses XML format to convert configs and policies.
   Policies can not be extracted from SRX configuration output, because it does not provide **rule order** . So, from `show security policies` it can find out rule/policy orders.
 
-  Also, this tool **does not** support Zone, Interfaces, and NAT. Please note that you must create interfaces and Zones before using policy output.
 
 Here are steps to provide correct output file from SRX:
 
@@ -35,8 +37,11 @@ Here are steps to provide correct output file from SRX:
     1. Make sure only XML output is in the file.
 
 Notes:
+- __Fortigate__:
+  - Because of the platform limitations, Policy names will be support upto 35 charachter. So, if there is a policy name with more than 35 charachter length will be convert to only first 35 characters.
+
 - __Palo Alto__:
-  - May not allow more than 100 inputs in one copy/paste. So partition the output in clipboard.
+  - May not allow more than 30 inputs in one copy/paste. So partition the output in clipboard.
   - Applications are pre-defined as `any`. So, if you need to change it you must edit the output.
 - __Check Point__:
   * From release R80 and later supports.
@@ -58,9 +63,9 @@ Notes:
         * Because of the platform, you must paste rules by grouping 3 or 4 rules for each copy.
         * Please note that about per 100 lines there is a `publish` action.
 
-Any predefined services are not included in Firewall Migration Tool, or not defined on destionation vendor (e.g. Palo Alto), will be same as SRX platform. For example, `junos-who` may will be the same on output of conversion.
+Any predefined services are not included in Firewall Migration Tool, or not defined on destionation vendor (e.g. Palo Alto), will be same as SRX platform. For example, `junos-who` may will be the same on output of conversion. If there is `junos` object that this tool can't convert it, you can find `Error` on description of policy that it uses.
 
-### Check Point
+### __Check Point__
   This tool is tested on SmartConsle __csv__  policy and address object exporting format.
   Because of insufficient information on csv output, Service part does not have protocol part to understand wheter it is TCP/UDP and etc.
 
@@ -76,7 +81,7 @@ Any predefined services are not included in Firewall Migration Tool, or not defi
 
 ## Troubleshoot
 * Check file content before upload it for conversion.
-* SRX content must be pure XML and Checkpoint must be CSV formatted.
+* SRX content must be pure XML with no extra lines and Checkpoint must be CSV formatted.
 
 ## Feedback
 Please share your experience with me about Firewall Migration Tool through [@tavajjohi](https://twitter.com/tavajjohi "twitter") on twitter.
