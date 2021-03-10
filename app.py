@@ -4,7 +4,6 @@ from flask import Flask, flash, request, redirect, url_for, send_from_directory
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
 
-from resources.protocols.nc_conn import NcMGR
 from resources.parser import main_parser
 from resources import app_logger
 
@@ -28,6 +27,7 @@ def main():
         src_vendor = request.form.get('src_vendor')
         if request.form.get('type') == 'netconf':
             if src_vendor == 'srx':
+                from resources.protocols.nc_conn import NcMGR
                 acts = request.form.getlist('acts')
                 action = request.form.get('action')
                 nc_client = NcMGR()
@@ -61,7 +61,7 @@ def main():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            if src_vendor in ['srx', 'chpoint']:
+            if src_vendor not in ['asa', 'forti']:
                 acts = request.form.getlist('acts')
                 action = request.form.get('action')
                 if action == 'config' and not acts:

@@ -3,16 +3,18 @@ import logging
 
 from typing import List
 
-from resources.src_vendor.chpoint.chpoint_config_parser import CHP_CFG
-from resources.src_vendor.srx.srx_config_converter import SRX_Cfg
-
 logger = logging.getLogger('fwmig.parser')
 
 def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: List[str]) -> bool:
     if src_vendor == 'srx':
+        from resources.src_vendor.srx.srx_config_converter import SRX_Cfg
         output = SRX_Cfg(cfg, dst_vendor)
     elif src_vendor == 'chpoint':
+        from resources.src_vendor.chpoint.chpoint_config_parser import CHP_CFG
         output = CHP_CFG(cfg, dst_vendor)
+    elif src_vendor == 'palo':
+        from resources.src_vendor.palo.palo_config_coverter import PALO_Cfg
+        output = PALO_Cfg(cfg, dst_vendor)
     
     try:
         if action == 'policy':

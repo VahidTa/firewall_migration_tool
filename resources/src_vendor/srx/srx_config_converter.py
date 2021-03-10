@@ -1,6 +1,7 @@
 import json
 import xmltodict
 import os
+import logging
 
 from resources.src_vendor.srx.srx_policy_convert import forti_translation,\
                                             palo_translation,\
@@ -13,10 +14,13 @@ from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
 from resources.src_vendor.srx.srx_policy_convert import srx_policy
 
+
+
 palo = Palo_DST()
 forti = Forti_DST()
 asa = ASA_DST()
 chpoint = CHPoint_DST()
+logger = logging.getLogger('fwmig.srx.config')
 
 class SRX_Cfg:
     """Converts SRX -> Fortigate, ASA, Forti, Palo Alto (except zone and interfaces) """
@@ -223,81 +227,94 @@ class SRX_Cfg:
     def zone(self):
         """Not Implemented"""
         return
-        security_cfg = self._job()
-        zones = security_cfg['security']['zones']['security-zone']
-        interfaces = security_cfg['interfaces']['interface']
+        # item = SRX_Int('test', '10.10.10.10/24')
+        # item.save_to_db()
 
-        for main_index in range(len(zones)):
-            service_list = []
-            zone_int_list = []
+        security_cfg = self._job
+        # zones = security_cfg['security']['zones']['security-zone']
 
-            zone_name = zones[main_index].get('name', 'None')
-            zone_service = zones[main_index]['host-inbound-traffic']['system-services']
-            zone_ints = zones[main_index]['interfaces']
-            if isinstance(zone_service, (list)):
-                for sub_index in range(len(zone_service)):
-                    service = zone_service[sub_index].get('name', 'None')
-                    service_list.append(service)
-            else:
-                service = zone_service.get('name', 'None')
-                service_list.append(service)
-            service = ' '.join(service_list)
+        # for main_index in range(len(zones)):
+        #     service_list = []
+        #     zone_int_list = []
 
-            if isinstance(zone_ints, (list)):
-                for sub_index in range(len(zone_ints)):
-                    zone_int = zone_ints[sub_index].get('name', 'None')
-                    zone_int_list.append(zone_int)
-            else:
-                zone_int = zone_ints.get('name', 'None')
-                zone_int_list.append(zone_int)
-            zone_int = ' '.join(zone_int_list)
-            if self.vendor == 'forti':
-                with open('exported/forti/zones.txt', 'a') as f:
-                    f.write(f'zone {zone_name} ')
+        #     zone_name = zones[main_index].get('name', 'None')
+        #     zone_service = zones[main_index]['host-inbound-traffic']['system-services']
+        #     zone_ints = zones[main_index]['interfaces']
+        #     if isinstance(zone_service, (list)):
+        #         for sub_index in range(len(zone_service)):
+        #             service = zone_service[sub_index].get('name', 'None')
+        #             service_list.append(service)
+        #     else:
+        #         service = zone_service.get('name', 'None')
+        #         service_list.append(service)
+        #     service = ' '.join(service_list)
+
+        #     if isinstance(zone_ints, (list)):
+        #         for sub_index in range(len(zone_ints)):
+        #             zone_int = zone_ints[sub_index].get('name', 'None')
+        #             zone_int_list.append(zone_int)
+        #     else:
+        #         zone_int = zone_ints.get('name', 'None')
+        #         zone_int_list.append(zone_int)
+        #     zone_int = ' '.join(zone_int_list)
+        #     if self.vendor == 'forti':
+        #         with open('exported/forti/zones.txt', 'a') as f:
+        #             f.write(f'zone {zone_name} ')
 
         
+        interfaces = security_cfg['interfaces']['interface']
+        
         for main_index in range(len(interfaces)):
-            name_list = []
-            vlan_list = []
-            ip_list = []
+            # name_list = []
+            # vlan_list = []
+            # ip_list = []
             int_name = interfaces[main_index].get('name')
             int_units = interfaces[main_index].get('unit')
-            if not int_units:
-                continue
-            if isinstance(int_units, (list)):
-                for sub_index in range(len(int_units)):
-                    unit_name = int_units[sub_index].get('name')
-                    name_list.append(unit_name)
-                    vlan_id = int_units[sub_index].get('vlan-id')
-                    vlan_list.append(vlan_id)
-                    ip_addr = int_units[sub_index]['family']['inet']['address'].get('name', 'None')
-                    ip_list.append(ip_addr)
-            else:
-                unit_name = int_units.get('name')
-                name_list.append(unit_name)
-                vlan_id = int_units.get('vlan-id')
-                if vlan_id:
-                    vlan_list.append(vlan_id)
-                try:
-                    ip_addr = int_units['family']['inet']['address'].get('name', 'None')
-                    ip_list.append(ip_addr)
-                except:
-                    pass
-            unit_name = ' '.join(name_list)
-            if vlan_list:
-                vlan_id = ' '.join(vlan_list)
-            else:
-                vlan_id = 0
-            if ip_list:
-                ip_addr = ' '.join(ip_list)
-            else:
-                ip_addr = "n/a"
+            
+            if int_units:
+                if isinstance(int_units, (list)):
+                    for sub_index in range(len(int_units)):
+                        unit_name = int_units[sub_index].get('name')
+                        # name_list.append(unit_name)
+                        vlan_id = int_units[sub_index].get('vlan-id')
+                        # vlan_list.append(vlan_id)
+                        try:
+                            ip_addr = int_units[sub_index]['family']['inet']['address'].get('name', 'None')
+                            # ip_list.append(ip_addr)
+                            print(int_name+'.'+unit_name, vlan_id)
+                            item = SRX_Int(int_name+'.'+unit_name, vlan_id, ip_addr)
+                            logger.info(f'{item} created!')
+                            item.save_to_db()
+                        except:
+                            pass
+
+                else:
+                    unit_name = int_units.get('name')
+                    vlan_id = int_units.get('vlan-id')
+                    try:
+                        ip_addr = int_units['family']['inet']['address'].get('name', 'None')
+                        item = SRX_Int(int_name+'.'+unit_name, vlan_id, ip_addr)
+                        logger.info(f'{item} created!')
+                        item.save_to_db()
+                    except:
+                        pass
+        test = SRX_Int.findby_interface('10')
+        print(test)
+
+            # with open('exported/vahid.txt', 'a') as f:
+            #     f.write(test)
+            # unit_name = ' '.join(name_list)
+            # if vlan_list:
+            #     vlan_id = ' '.join(vlan_list)
+            # else:
+            #     vlan_id = 0
+            # if ip_list:
+            #     ip_addr = ' '.join(ip_list)
+            # else:
+            #     ip_addr = "n/a"
 
 
-            if self.vendor == 'forti':
-                with open('exported/forti/zones.txt', 'a') as f:
-                    for i in range(len(name_list)):
-                        f.write(f'int {name_list[i]}\n')
+            # print(int_name, unit_name, ip_addr)
     
     @property
     def delete(self):
