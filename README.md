@@ -12,4 +12,8 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 
 # Documentation
 
+<<<<<<< HEAD
 Firewall Migration Tool (fwmig) documentation lives at []
+=======
+Firewall Migration Tool (fwmig) documentation lives at [fwmig.readthedocs.io](https://fwmig.readthedocs.io/en/latest/?)
+>>>>>>> 151142d (Adding documentation)
