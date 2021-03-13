@@ -8,55 +8,72 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - Dockerfile is available for container implementaions.
 - Logging for troubleshoot is implemented.
 - Tested on python 3.8 and 3.9
-- Supported Matrix is table below:
+
+Supported Matrix is table below:
 
 <table>
     <tr>
-        <td>Source Vendor</td>
-        <td colspan="6">Destination Vendor</td>
+        <td><strong>Source Vendor</strong></td>
+        <td colspan="6"><strong>Destination Vendor</strong></td>
     </tr>
     <tr>
         <td></td>
-        <td>Juniper SRX</td>
+        <td><strong>Juniper SRX</strong></td>
+        <td><strong>Fortigate</strong></td>
+        <td><strong>Cisco ASA</strong></td>
+        <td><strong>Checkpoint</strong></td>
+        <td><strong>Palo Alto</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Juniper SRX</strong></td>
+        <td>N/A</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+    </tr>
+    <tr>
+<<<<<<< HEAD
         <td>Fortigate</td>
+=======
+        <td><strong>Fortigate</strong></td>
+>>>>>>> 9ccb5e2 (Table Enhancements)
+        <td></td>
+        <td>N/A</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+<<<<<<< HEAD
         <td>Cisco ASA</td>
+=======
+        <td><strong>Cisco ASA</strong></td>
+>>>>>>> 9ccb5e2 (Table Enhancements)
+        <td></td>
+        <td></td>
+        <td>N/A</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+<<<<<<< HEAD
         <td>Checkpoint</td>
+=======
+        <td><strong>Checkpoint</strong></td>
+>>>>>>> 9ccb5e2 (Table Enhancements)
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>N/A</td>
+        <td>X</td>
+    </tr>
+    <tr>
+<<<<<<< HEAD
         <td>Palo Alto</td>
-    </tr>
-    <tr>
-        <td>Juniper SRX</td>
-        <td>N/A</td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
-    </tr>
-    <tr>
-        <td>Fortigate</td>
-        <td></td>
-        <td>N/A</td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Cisco ASA</td>
-        <td></td>
-        <td></td>
-        <td>N/A</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Checkpoint</td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
-        <td>N/A</td>
-        <td>X</td>
-    </tr>
-    <tr>
-        <td>Palo Alto</td>
+=======
+        <td><strong>Palo Alto</strong></td>
+>>>>>>> 9ccb5e2 (Table Enhancements)
         <td>X</td>
         <td>X</td>
         <td>X</td>
@@ -64,8 +81,12 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
         <td>N/A</td>
     </tr>
 </table>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9ccb5e2 (Table Enhancements)
 
+</br>
 
 ![fwmig](https://github.com/VahidTa/firewall_migration_tool/blob/main/docs/image/main.png?raw=true)
 
