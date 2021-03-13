@@ -10,16 +10,22 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - Logging for troubleshoot is implemented.
 - Tested on python 3.8 and 3.9
 
-.. list-table:: Title
-   :widths: 25 25 50
+.. list-table:: Supporting Matrix
+   :widths: auto
    :header-rows: 1
 
-   * - 
+   * -  Destination Vendor ->
      - SRX
      - Fortigate
      - Cisco ASA
      - Checkpoint
-     - Palo ALto
+     - Palo Alto
+   * - Source Vendor
+     - 
+     - 
+     - 
+     - 
+     - 
    * - SRX
      - N/A
      - X
