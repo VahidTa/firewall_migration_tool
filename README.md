@@ -10,17 +10,61 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - Tested on python 3.8 and 3.9
 - Supported Matrix is table below:
 
-| | |    |   | Destination Vendor |  |  |
-| :-----| :---------- |:-------------:| :-----:| :-------------: |:-------------:| :-----:|
-| **Source Vendor** |  | **SRX**  | **Fortigate**  | **Cisco ASA** | **Checkpoint** | **Palo Alto** |
-| **SRX**      | | N/A | X | X | X | X |
-| **Fortigate** | |  | N/A | | | | |
-| **Cisco ASA** | |  | | N/A | | |
-| **Checkpoint** | | X | X | X | N/A | X | 
-| **Palo Alto** | | X | X | X | X |N/A |
+<table>
+    <tr>
+        <td>Source Vendor</td>
+        <td colspan="6">Destination Vendor</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Juniper SRX</td>
+        <td>Fortigate</td>
+        <td>Cisco ASA</td>
+        <td>Checkpoint</td>
+        <td>Palo Alto</td>
+    </tr>
+    <tr>
+        <td>Juniper SRX</td>
+        <td>N/A</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+    </tr>
+    <tr>
+        <td>Fortigate</td>
+        <td></td>
+        <td>N/A</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Cisco ASA</td>
+        <td></td>
+        <td></td>
+        <td>N/A</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Checkpoint</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>N/A</td>
+        <td>X</td>
+    </tr>
+    <tr>
+        <td>Palo Alto</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>N/A</td>
+    </tr>
+</table>
 
-</br>
-</br>
 
 
 ![fwmig](https://github.com/VahidTa/firewall_migration_tool/blob/main/docs/image/main.png?raw=true)
