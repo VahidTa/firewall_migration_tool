@@ -27,41 +27,41 @@ Supported Matrix is table below:
     <tr>
         <td><strong>Juniper SRX</strong></td>
         <td>N/A</td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
     </tr>
     <tr>
         <td><strong>Fortigate</strong></td>
-        <td></td>
+        <td>No</td>
         <td>N/A</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>No</td>
+        <td>No</td>
+        <td>No</td>
     </tr>
     <tr>
         <td><strong>Cisco ASA</strong></td>
-        <td></td>
-        <td></td>
+        <td>No</td>
+        <td>No</td>
         <td>N/A</td>
-        <td></td>
-        <td></td>
+        <td>No</td>
+        <td>No</td>
     </tr>
     <tr>
         <td><strong>Checkpoint</strong></td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
         <td>N/A</td>
-        <td>X</td>
+        <td>Yes</td>
     </tr>
     <tr>
         <td><strong>Palo Alto</strong></td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
-        <td>X</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
+        <td>Yes</td>
         <td>N/A</td>
     </tr>
 </table>
