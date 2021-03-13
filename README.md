@@ -8,6 +8,19 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - Dockerfile is available for container implementaions.
 - Logging for troubleshoot is implemented.
 - Tested on python 3.8 and 3.9
+- Supported Matrix is table below:
+
+| | |    |   | Destination Vendor |  |  |
+| :-----| :---------- |:-------------:| :-----:| :-------------: |:-------------:| :-----:|
+| Source Vendor |  | SRX           | Fortigate  | Cisco ASA | Checkpoint | Palo Alto |
+| SRX      | | N/A | X | X | X | X |
+| Fortigate | |  | N/A | | | | |
+| Cisco ASA | |  | | N/A | | |
+| Checkpoint | | X | X | X | N/A | X | 
+| Palo Alto | | X | X | X | X |N/A |
+
+</br>
+</br>
 
 
 ![fwmig](https://github.com/VahidTa/firewall_migration_tool/blob/main/docs/image/main.png?raw=true)

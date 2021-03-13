@@ -10,22 +10,26 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - Logging for troubleshoot is implemented.
 - Tested on python 3.8 and 3.9
 
-.. list-table:: Supporting Matrix
-   :widths: auto
-   :header-rows: 1
+|
 
-   * -  Destination Vendor ->
+Supported Matrix table:
+
+.. list-table:: 
+   :widths: auto
+   :header-rows: 2
+
+   * - 
+     - 
+     -
+     - Destination Vendor
+     - 
+     - 
+   * - Source Vendor
      - SRX
      - Fortigate
      - Cisco ASA
      - Checkpoint
      - Palo Alto
-   * - Source Vendor
-     - 
-     - 
-     - 
-     - 
-     - 
    * - SRX
      - N/A
      - X
@@ -56,6 +60,8 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
      - X
      - X
      - N/A
+
+|
 
 Any predefined services that are not included in fwmig, or not defined on destionation vendor (e.g. Palo Alto), will be same as source platform. For example, ``junos-who`` may will be the same on output of conversion.
 If there is ``junos`` object that this tool can't convert it, you can find ``Error`` on description of policy that it uses.
