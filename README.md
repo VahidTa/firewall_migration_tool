@@ -13,11 +13,11 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 | | |    |   | Destination Vendor |  |  |
 | :-----| :---------- |:-------------:| :-----:| :-------------: |:-------------:| :-----:|
 | Source Vendor |  | SRX           | Fortigate  | Cisco ASA | Checkpoint | Palo Alto |
-| SRX      | | N/A | X | X | X | X |
-| Fortigate | |  | N/A | | | | |
-| Cisco ASA | |  | | N/A | | |
-| Checkpoint | | X | X | X | N/A | X | 
-| Palo Alto | | X | X | X | X |N/A |
+| **SRX**      | | N/A | X | X | X | X |
+| **Fortigate** | |  | N/A | | | | |
+| **Cisco ASA** | |  | | N/A | | |
+| **Checkpoint** | | X | X | X | N/A | X | 
+| **Palo Alto** | | X | X | X | X |N/A |
 
 </br>
 </br>

@@ -17,6 +17,7 @@ Supported Matrix table:
 .. list-table:: 
    :widths: auto
    :header-rows: 2
+   :stub-columns: 1
 
    * - 
      - 
