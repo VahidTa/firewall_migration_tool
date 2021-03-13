@@ -14,53 +14,21 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 
 Supported Matrix table:
 
-.. list-table:: 
-   :widths: 30 15 20 20 20 20
-   :header-rows: 2
-   :stub-columns: 1
-
-   * - 
-     - 
-     -
-     - Destination Vendor
-     - 
-     - 
-   * - Source Vendor
-     - SRX
-     - Fortigate
-     - Cisco ASA
-     - Checkpoint
-     - Palo Alto
-   * - SRX
-     - N/A
-     - X
-     - X
-     - X
-     - X
-   * - Fortigate
-     - 
-     - N/A
-     - 
-     - 
-     - 
-   * - Cisco ASA
-     - 
-     - 
-     - N/A
-     - 
-     - 
-   * - Checkpoint
-     - X
-     - X
-     - X
-     - N/A
-     - X
-   * - Palo Alto
-     - X
-     - X
-     - X
-     - X
-     - N/A
+================  ======  ==========  ==========  ===========  ===========
+Source Vendor                  Destination Vendor
+----------------  --------------------------------------------------------
+ ..                SRX     Fortigate   Cisco ASA   Checkpoint   Palo Alto
+================  ======  ==========  ==========  ===========  ===========
+**SRX**           N/A         X           X           X           X
+----------------  ------  ----------  ----------  -----------  -----------
+**Fortigate**     ..         N/A          ..          ..          ..
+----------------  ------  ----------  ----------  -----------  -----------
+**Cisco ASA**     ..         ..         N/A          ..          ..
+----------------  ------  ----------  ----------  -----------  -----------
+**Checkpoint**      X         X           X           N/A          X
+----------------  ------  ----------  ----------  -----------  -----------
+**Palo Alt**        X         X           X            X           N/A
+================  ======  ==========  ==========  ===========  ===========
 
 |
 
