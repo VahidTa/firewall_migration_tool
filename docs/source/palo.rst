@@ -14,6 +14,10 @@ File Base
 - Execute ``show`` command
 - Copy the output into file 
 - Supported file extensions is .log and .txt
+- Because of Palo Alto XML formatted that is not standard, it is important to wrap up entire output with <root> and </root> tag.
+
+.. image:: _static/palo/config_correction.png
+    :align: center
 
 |
 
