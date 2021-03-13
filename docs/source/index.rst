@@ -15,7 +15,7 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 Supported Matrix table:
 
 .. list-table:: 
-   :widths: auto
+   :widths: 30 15 20 20 20 20
    :header-rows: 2
    :stub-columns: 1
 
