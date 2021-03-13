@@ -33,11 +33,7 @@ Supported Matrix is table below:
         <td>X</td>
     </tr>
     <tr>
-<<<<<<< HEAD
-        <td>Fortigate</td>
-=======
         <td><strong>Fortigate</strong></td>
->>>>>>> 9ccb5e2 (Table Enhancements)
         <td></td>
         <td>N/A</td>
         <td></td>
@@ -45,11 +41,7 @@ Supported Matrix is table below:
         <td></td>
     </tr>
     <tr>
-<<<<<<< HEAD
-        <td>Cisco ASA</td>
-=======
         <td><strong>Cisco ASA</strong></td>
->>>>>>> 9ccb5e2 (Table Enhancements)
         <td></td>
         <td></td>
         <td>N/A</td>
@@ -57,11 +49,7 @@ Supported Matrix is table below:
         <td></td>
     </tr>
     <tr>
-<<<<<<< HEAD
-        <td>Checkpoint</td>
-=======
         <td><strong>Checkpoint</strong></td>
->>>>>>> 9ccb5e2 (Table Enhancements)
         <td>X</td>
         <td>X</td>
         <td>X</td>
@@ -69,11 +57,7 @@ Supported Matrix is table below:
         <td>X</td>
     </tr>
     <tr>
-<<<<<<< HEAD
-        <td>Palo Alto</td>
-=======
         <td><strong>Palo Alto</strong></td>
->>>>>>> 9ccb5e2 (Table Enhancements)
         <td>X</td>
         <td>X</td>
         <td>X</td>
@@ -81,10 +65,6 @@ Supported Matrix is table below:
         <td>N/A</td>
     </tr>
 </table>
-<<<<<<< HEAD
-
-=======
->>>>>>> 9ccb5e2 (Table Enhancements)
 
 </br>
 
