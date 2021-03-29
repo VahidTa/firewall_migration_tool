@@ -8,6 +8,7 @@ class Palo_DST:
         source_port = args[3]
         application_protocol = args[4]
         application_desc = args[5]
+        app_session_ttl = args[6]
         
         with open('exported/palo/services.txt', 'a') as f:
             if destination_port:
@@ -16,6 +17,10 @@ class Palo_DST:
                 f.write(f'set service {application_name} protocol {application_protocol} source-port {source_port}\n\n')
             if application_desc:
                 f.write(f'set service {application_name} description "{application_desc}"\n\n')
+            if app_session_ttl:
+                f.write(f'set service {application_name} protocol {application_protocol} override yes timeout {app_session_ttl}\n\n')
+                
+
     
     def service_set(*args):
         app_set_name = args[1]

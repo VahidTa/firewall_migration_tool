@@ -3,7 +3,18 @@ SRX conversion
 
 It is tested on Junos 12.x , 15.x , 18.x and it uses XML format to convert configs and policies.
 Policies can not be extracted from SRX configuration output, because it does not provide **rule order** . So, from ``show security policies`` it can find out rule/policy orders.
-To policies works correctly you must convert and 
+
+Features
+========
+- Address books (Global and Policy based)
+    - Name
+    - Description
+
+- Services and Service Groups
+    - Name
+    - Description
+    - Source and Destination port
+    - Session timeout
 
 |
 
@@ -66,4 +77,4 @@ You can use Netconf for conversion in fwmig. It will connect to the srx device a
 Final step
 **********
 
-Got to `After conversion <final.html>`_ 
+Go to `After conversion <final.html>`_ 

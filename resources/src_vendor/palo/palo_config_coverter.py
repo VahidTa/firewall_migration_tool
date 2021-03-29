@@ -54,16 +54,17 @@ class PALO_Cfg:
             application_protocol = applications_list[index]['protocol'].keys()
             application_protocol = list(application_protocol)[0]
             destination_port = applications_list[index]['protocol'][application_protocol]['port']
-            source_port = 'None'
+            source_port = ''
+            session_ttl = ''
 
             
             if self.vendor == 'forti':
-                forti.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                forti.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
             elif self.vendor == 'asa':
                 asa.service(application_name, destination_port, source_port, application_protocol, application_desc)
                 
             elif self.vendor == 'srx':
-                srx.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                srx.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
 
             elif self.vendor == 'chpoint':
                 if not source_port:
@@ -72,7 +73,7 @@ class PALO_Cfg:
                 if application_name[:1].isdigit():
                     application_name = 'custom_' + application_name
                 
-                chpoint.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                chpoint.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
 
                         
     

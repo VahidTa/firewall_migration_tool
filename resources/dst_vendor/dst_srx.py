@@ -8,6 +8,7 @@ class SRX_DST:
         source_port = args[3]
         application_protocol = args[4]
         application_desc = args[5]
+        app_session_ttl = args[6]
         
         with open('exported/srx/services.txt', 'a') as f:
             if destination_port:

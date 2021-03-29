@@ -11,15 +11,16 @@ class CHPoint_DST:
         source_port = args[3]
         application_protocol = args[4]
         application_desc = args[5]
-
+        app_session_ttl = args[6]
+        
         the_path = f'exported/chpoint/service-{application_protocol}.csv'
         with open(the_path, 'a') as f:
             if os.path.getsize(the_path) == 0:
-                f.write('name,port,source-port,set-if-exists,ignore-warnings,ignore-errors,comments\n')
+                f.write('name,port,source-port,session-timeout,set-if-exists,ignore-warnings,ignore-errors,comments\n')
             if application_desc and destination_port:
-                f.write(f'{application_name},{destination_port},{source_port},true,true,true,"{application_desc}"\n')
+                f.write(f'{application_name},{destination_port},{source_port},{app_session_ttl},true,true,true,"{application_desc}"\n')
             elif destination_port:
-                f.write(f'{application_name},{destination_port},{source_port},true,true,true,\n')
+                f.write(f'{application_name},{destination_port},{source_port},{app_session_ttl},true,true,true,\n')
         
     def service_set(*args):
         app_set_name = args[1]

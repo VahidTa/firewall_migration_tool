@@ -51,23 +51,28 @@ class SRX_Cfg:
             application_protocol = apps[index].get('protocol', 'None')
             destination_port = apps[index].get('destination-port')
             source_port = apps[index].get('source-port')
+            session_ttl = apps[index].get('inactivity-timeout')
             
             if self.vendor == 'forti':
-                forti.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                forti.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
             elif self.vendor == 'asa':
                 asa.service(application_name, destination_port, source_port, application_protocol, application_desc)
                 
             elif self.vendor == 'palo':
-                palo.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                if session_ttl == 'never':
+                    session_ttl = False
+                palo.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
 
             elif self.vendor == 'chpoint':
                 if not source_port:
                     source_port = ''
+                if (not session_ttl) or (session_ttl == 'never'):
+                    session_ttl = ''
                 # Because the platform does not support name start with Digits!
                 if application_name[:1].isdigit():
                     application_name = 'custom_' + application_name
                 
-                chpoint.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                chpoint.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
 
                         
     
