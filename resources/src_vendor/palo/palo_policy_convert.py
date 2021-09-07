@@ -1,6 +1,7 @@
 import xmltodict
 import json
 import os
+import logging
 
 from resources.dst_vendor.dst_srx import SRX_DST
 from resources.dst_vendor.dst_forti import Forti_DST
@@ -37,6 +38,8 @@ asa_translation = {
     'service-https': ['tcp', 'https'],
 }
 
+logger = logging.getLogger('fwmig.palo.policy')
+
 def palo_policy(file: str, vendor: str):
     """Uses <show security policies | display xml> to provide rule order!"""
     if not os.path.exists(f'exported/{vendor}'):
@@ -46,14 +49,22 @@ def palo_policy(file: str, vendor: str):
             os.remove(os.path.join(f'exported/{vendor}/', 'policies.txt'))
         except:
             pass
-
-    with open(f'configs/{file}', 'r') as f:
-        my_text = xmltodict.parse(f.read())
+    
+    try:
+        with open(f'configs/{file}', 'r') as f:
+            my_text = xmltodict.parse(f.read())
+    except Exception as err:
+        logger.error(f'Check file format. Maybe <root> tag is not exists!')
+        raise ValueError(err)
 
     os.remove(f'configs/{file}')
     
-    json_formatted = json.dumps(my_text)
-    dict_formatted = json.loads(json_formatted)['root']['response']
+    try:
+        json_formatted = json.dumps(my_text)
+        dict_formatted = json.loads(json_formatted)['root']['response']
+    except:
+        logger.error('<root> or <response> are not exists on the config. Conversion failed!')
+
     for i in range(len(dict_formatted)):
         try:
             if 'rulebase' in dict_formatted[i]['result']:

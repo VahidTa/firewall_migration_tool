@@ -15,6 +15,9 @@ def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: L
     elif src_vendor == 'palo':
         from resources.src_vendor.palo.palo_config_coverter import PALO_Cfg
         output = PALO_Cfg(cfg, dst_vendor)
+    # elif src_vendor == 'asa':
+    #     from resources.src_vendor.asa.asa_config_converter import ASA_CFG
+    #     output = ASA_CFG(cfg, dst_vendor)
     
     try:
         if action == 'policy':
@@ -45,8 +48,10 @@ def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: L
             output.delete
         logger.info('Conversion finished successfully!')
         return True
-    except:
+    except Exception as err:
         logger.warning('Conversion Failed! Please re-check file content or Source vendor.')
+        logger.error(err)
         logger.info(50*'=')
+
         os.remove(f'configs/{cfg}')
         return False

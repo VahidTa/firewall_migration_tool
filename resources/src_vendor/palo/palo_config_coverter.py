@@ -32,11 +32,13 @@ class PALO_Cfg:
         try:
             return dict_formatted['root']['response']
         except:
+            logger.error('<root> or <response> are not exists on the config. Conversion failed!')
             return False
     
     @property
     def service(self):
         """Exports custom application created on PaloAlto"""
+        logger.info('Service process started ...')
 
         dict_formatted = self._job
         if not dict_formatted:
@@ -80,6 +82,7 @@ class PALO_Cfg:
     @property
     def service_set(self):
         """Exports custome application-set created on SRX"""
+        logger.info('Service-set process started ...')
 
         dict_formatted = self._job
         if not dict_formatted:
@@ -89,7 +92,9 @@ class PALO_Cfg:
             try:
                 if 'service-group' in dict_formatted[i]['result']:
                     applications_list = dict_formatted[i]['result']['service-group']['entry']
+                    logger.info('Service-group exists in policy')
             except:
+                logger.info('Service-group is not in policy')
                 continue
 
         for index in range(len(applications_list)):
@@ -118,6 +123,8 @@ class PALO_Cfg:
     @property
     def address(self):
         """Converts address books"""
+        logger.info('Address and address-group process started ...')
+
         dict_formatted = self._job
         if not dict_formatted:
             return False
@@ -129,6 +136,7 @@ class PALO_Cfg:
                 elif 'address-group' in dict_formatted[i]['result']:
                     address_set_books = dict_formatted[i]['result']['address-group']['entry']
             except:
+                logger.info('Address-group or address is not in policy')
                 continue
 
         for index in range(len(address_list)):
@@ -176,6 +184,7 @@ class PALO_Cfg:
     
     @property
     def policy(self):
+        logger.info('Policy process started ...')
         palo_policy(self.cfg_file, self.vendor)
     
     @property
