@@ -72,6 +72,12 @@ def palo_policy(file: str, vendor: str):
         except:
             continue
     position = 1
+
+    try:
+        len(security_cfg)
+    except:
+        raise ValueError("This tool can't work for one rule!")
+    
     for main_index in range(len(security_cfg)):
         policy_src_list = []
         policy_dst_list = []
