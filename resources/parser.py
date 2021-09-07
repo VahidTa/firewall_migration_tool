@@ -52,6 +52,8 @@ def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: L
         logger.warning('Conversion Failed! Please re-check file content or Source vendor.')
         logger.error(err)
         logger.info(50*'=')
-
-        os.remove(f'configs/{cfg}')
+        try:
+            os.remove(f'configs/{cfg}')
+        except:
+            pass
         return False
