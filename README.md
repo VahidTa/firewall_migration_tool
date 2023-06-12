@@ -9,7 +9,25 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - Logging for troubleshoot is implemented.
 - Tested on python 3.8 and 3.9, and 3.10
 
-Supported Matrix is table below:
+----
+## Run the code:
+
+```sh
+python3.10 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+Or use Docker:
+
+```sh
+docker build -t fwmig .
+docker run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
+```
+
+-----
+
+## Supported Matrix:
 
 <table>
     <tr>

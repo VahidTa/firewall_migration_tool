@@ -21,6 +21,6 @@ Container
     :linenos:
 
     docker build -t fwmig:latest
-    docker run -p 8080:5000 -d -v ./logs/:/app/logs/ -ti fwmig:latest
+    docker run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
 
-- Connect to ``http://container_ip:8080`` on browser.
+- Connect to ``http://127.0.0.1:8080`` on browser.
