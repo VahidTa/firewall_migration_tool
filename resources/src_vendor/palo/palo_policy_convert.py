@@ -128,13 +128,19 @@ def palo_policy(file: str, vendor: str):
             policy_log = False
         if policy_src_list:
             policy_src_address = ' '.join(policy_src_list)
+        else:
+            policy_src_address = policy_source_address
         if policy_dst_list:
             policy_dst_address = ' '.join(policy_dst_list)
+        else:
+            policy_dst_address = policy_dst_address
         if policy_app_list:
             try:
                 policy_app = ' '.join(policy_app_list)
             except:
                 policy_app = policy_app_list
+        else:
+            policy_app = policy_app
         
         if vendor == 'forti':
             policy_state = forti_translation.get(policy_state, policy_state)
