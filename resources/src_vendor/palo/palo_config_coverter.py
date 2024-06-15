@@ -96,7 +96,9 @@ class PALO_Cfg:
             except:
                 logger.info('Service-group is not in policy')
                 continue
-
+        if not isinstance(applications_list,list):
+            # if only one applications_list exists
+            applications_list = [applications_list]
         for index in range(len(applications_list)):
             app_list = []
             app_set_name = applications_list[index].get('@name', 'None')
@@ -162,6 +164,9 @@ class PALO_Cfg:
 
         
         if address_set_books:
+            if not isinstance(address_set_books,list):
+                # if only one address-group exists
+                address_set_books = [address_set_books]
             for index in range(len(address_set_books)):
                 address_name_list = []
                 address_set_name = address_set_books[index].get('@name', 'None')
