@@ -120,7 +120,7 @@ class PALO_Cfg:
             elif self.vendor == 'srx':
                 srx.service_set(app_set_name, app_name)
             elif self.vendor == 'chpoint':
-                chpoint.address_set(app_set_name, app_list, app_set_desc)
+                chpoint.service_set(app_set_name, app_list, app_set_desc)
 
     
     @property
