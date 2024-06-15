@@ -9,6 +9,7 @@ from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
 from resources.src_vendor.palo.palo_policy_convert import palo_policy
+from ipaddress import ip_network
 
 srx = SRX_DST()
 forti = Forti_DST()
@@ -159,6 +160,15 @@ class PALO_Cfg:
                 srx.address(address_name, address_ip, address_description)
 
             elif self.vendor == 'chpoint':
+                if "/" not in address_ip:
+                    address_ip = address_ip+"/32"
+                try:
+                    ip_network(address_ip, strict=True)
+                    # address_ip is a valid network address (or a valid host with /32 mask) -->nothing to do
+                except ValueError:
+                    # address_ip is a palo specific host address that also has a network mask
+                    # --> convert to Host
+                    address_ip = address_ip.split("/")[0]+"/32"
                 chpoint.address(address_name, address_ip, address_description)
 
 
