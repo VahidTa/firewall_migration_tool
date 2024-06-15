@@ -210,7 +210,7 @@ def palo_policy(file: str, vendor: str):
                     src_list.append(f'source.{i+1} "{policy_src_list[i]}"')
                 policy_src_address = ' '.join(src_list)
             else:
-                policy_src_address = f'source "{policy_src_address}"'
+                policy_src_address = f'source "{policy_source_address}"'
             if policy_app_list:
                 app_list = []
                 for i in range(len(policy_app_list)):
