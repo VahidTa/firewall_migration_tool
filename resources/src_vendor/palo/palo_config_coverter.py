@@ -75,7 +75,10 @@ class PALO_Cfg:
                 # Because the platform does not support name start with Digits!
                 if application_name[:1].isdigit():
                     application_name = 'custom_' + application_name
-                
+                if "," in destination_port:
+                    # instead of skipping, creating single services and than a group would make more sense in the future
+                    logger.warn(f"Skipping Service {application_name} since it has multiple ports set, which checkpoint can't handle. Please add it manually afterwards")
+                    continue
                 chpoint.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
 
                         
