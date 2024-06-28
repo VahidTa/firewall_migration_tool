@@ -1,0 +1,6 @@
+name,subnet,subnet-mask,set-if-exists,ignore-warnings,ignore-errors,comments
+remote-office.NW,10.100.90.0,255.255.255.0,true,true,true,"Außenstandort Büro"
+Clients.NW,10.100.10.0,255.255.255.0,true,true,true,"Clients Network VLAN"
+DMZ.NW,10.100.1.0,255.255.255.0,true,true,true,"DMZ Network VLAN"
+MgM.NW,192.168.1.0,255.255.255.0,true,true,true,"Management Network VLAN"
+Others.NW,10.100.11.0,255.255.255.0,true,true,true,"Network for everything else"
