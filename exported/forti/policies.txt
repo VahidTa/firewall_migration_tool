@@ -1,0 +1,254 @@
+config firewall policy
+
+edit 1
+set name Test-allow-all
+set srcintf any
+set dstintf any
+set srcaddr all
+set dstaddr all
+set action accept
+set service ALL
+set status disable
+set schedule always
+next
+
+edit 2
+set name TestAllowAccessToPalo
+set srcintf WAN
+set dstintf WAN
+set srcaddr all
+set dstaddr WAN-PAN-IF WAN.RT.IF
+set action accept
+set service ALL
+set status enable
+set schedule always
+next
+
+edit 3
+set name DNAT-Webserver
+set srcintf WAN
+set dstintf DMZ
+set srcaddr all
+set dstaddr WEB-Server-Public-IP
+set action accept
+set service custom-test-service-01 custom-test-service-02
+set status enable
+set schedule always
+next
+
+edit 4
+set name zoneToNetwork
+set srcintf Internal
+set dstintf any
+set srcaddr all
+set dstaddr DMZ.NW
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 5
+set name networktToZone
+set srcintf any
+set dstintf DMZ
+set srcaddr MgM.NW
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 6
+set name zoneNetworkCombined
+set srcintf Internal
+set dstintf remote-office
+set srcaddr Clients.NW
+set dstaddr remote-office.NW
+set action accept
+set service ALL
+set status enable
+set schedule always
+next
+
+edit 7
+set name zoneNetworkCombinedSrc
+set srcintf remote-office
+set dstintf DMZ
+set srcaddr remote-office.NW
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 8
+set name zoneNetworkCombinedDst
+set srcintf Internal
+set dstintf remote-office
+set srcaddr all
+set dstaddr remote-office.NW
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 9
+set name serviceBasedRule
+set srcintf WAN
+set dstintf Internal
+set srcaddr all
+set dstaddr all
+set action accept
+set service custom-test-service-multiport
+set status enable
+set schedule always
+next
+
+edit 10
+set name appBasedRule
+set srcintf any
+set dstintf WAN
+set srcaddr internal.NW
+set dstaddr fh-campus-fqdn
+set action drop
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 11
+set name multiSrcZoneRule
+set srcintf ['DMZ', 'Internal', 'LAN-Trunk', 'Management']
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 12
+set name multiDstZoneRule
+set srcintf Management
+set dstintf ['DMZ', 'Internal']
+set srcaddr all
+set dstaddr all
+set action accept
+set service custom-test-service-group
+set status enable
+set schedule always
+next
+
+edit 13
+set name multiSrcNWRule
+set srcintf any
+set dstintf WAN
+set srcaddr Clients.NW Others.NW
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 14
+set name multiDstNWRule
+set srcintf any
+set dstintf any
+set srcaddr MgM.NW
+set dstaddr Clients.NW Others.NW
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 15
+set name urlCatBasedRule
+set srcintf Internal
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action drop
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 16
+set name timeBasedRule
+set srcintf Internal
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 17
+set name threadPreventionRule
+set srcintf ['DMZ', 'Internal']
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 18
+set name threadPreventionRuleBasedOnThreadP
+set srcintf ['DMZ', 'Internal']
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 19
+set name userBasedRule
+set srcintf Management
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 20
+set name deviceBasedRule
+set srcintf Management
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+
+edit 21
+set name deviceBasedDstRule
+set srcintf Management
+set dstintf WAN
+set srcaddr all
+set dstaddr all
+set action accept
+set service application-default
+set status enable
+set schedule always
+next
+

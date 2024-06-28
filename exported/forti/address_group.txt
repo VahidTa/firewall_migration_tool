@@ -1,0 +1,7 @@
+config firewall addrgrp
+
+edit internal.NW
+set member Clients.NW DMZ.NW MgM.NW Others.NW
+set comment "all internal vlans"
+next
+
