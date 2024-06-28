@@ -9,6 +9,7 @@ from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
 from resources.src_vendor.palo.palo_policy_convert import palo_policy
+from ipaddress import ip_network
 
 srx = SRX_DST()
 forti = Forti_DST()
@@ -96,6 +97,9 @@ class PALO_Cfg:
             except:
                 logger.info('Service-group is not in policy')
                 continue
+        if not isinstance(applications_list,list):
+            # if only one applications_list exists
+            applications_list = [applications_list]
 
         for index in range(len(applications_list)):
             app_list = []
@@ -162,6 +166,9 @@ class PALO_Cfg:
 
         
         if address_set_books:
+            if not isinstance(address_set_books,list):
+                # if only one address-group exists
+                address_set_books = [address_set_books]
             for index in range(len(address_set_books)):
                 address_name_list = []
                 address_set_name = address_set_books[index].get('@name', 'None')
