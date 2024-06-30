@@ -62,9 +62,9 @@ class PALO_Cfg:
 
             
             if self.vendor == 'forti':
-                if "," in destination_port:
-                    # on a fortigate a service with multiple ports is sepperated by a space not a semicolon
-                    destination_port = destination_port.replace(","," ")
+                # On a FortiGate a service with multiple ports is separated by a space, not a semicolon
+                destination_port = destination_port.replace(","," ")
+
                 forti.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
             elif self.vendor == 'asa':
                 asa.service(application_name, destination_port, source_port, application_protocol, application_desc)
@@ -157,11 +157,12 @@ class PALO_Cfg:
             if self.vendor == 'forti':
                 try:
                     ip_network(address_ip, strict=True)
-                    # address_ip is a valid network address (or a valid host with /32 mask) -->nothing to do
-                    address_ip = address_ip.split("/")[0] +" "+str(ip_network(address_ip).netmask)
+                    # address_ip is a valid network address (or a valid host with /32 mask) --> convert to FortiGate format
+                    address_ip = ip_network(address_ip, strict=True).with_netmask.replace("/"," ")
                 except ValueError:
-                    # address_ip is a palo specific host address that also has a network mask
-                    # --> convert to Host
+                    # address_ip is a palo specific host address (a host address with a network mask, wich is only there to indicate the subnet, but is not used so it should be replaced)
+                    # for example 192.168.1.123/24 should be converted to 192.168.1.123 255.255.255.255
+                    # --> manual convertion to FortiGate format
                     address_ip = address_ip.split("/")[0]+" 255.255.255.255"
                 forti.address(address_name, address_ip, address_description)
             
