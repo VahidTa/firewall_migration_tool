@@ -1,4 +1,0 @@
-name,port,source-port,session-timeout,set-if-exists,ignore-warnings,ignore-errors,comments
-custom-test-service-01,80,,,true,true,true,"test"
-custom-test-service-02,443,,,true,true,true,"test"
-custom-test-service-03,8080,,,true,true,true,"test"

@@ -1,5 +1,0 @@
-name,members.add,ignore-warnings,ignore-errors
-internal.NW,Clients.NW,true,true
-internal.NW,DMZ.NW,true,true
-internal.NW,MgM.NW,true,true
-internal.NW,Others.NW,true,true
