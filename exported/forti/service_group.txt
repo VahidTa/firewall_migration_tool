@@ -1,6 +1,0 @@
-config firewall service group
-
-edit custom-test-service-group
-set member custom-test-service-01 custom-test-service-02 custom-test-service-03
-next
-
