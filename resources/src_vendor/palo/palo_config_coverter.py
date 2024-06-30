@@ -9,6 +9,7 @@ from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
 from resources.src_vendor.palo.palo_policy_convert import palo_policy
+from ipaddress import ip_network
 
 srx = SRX_DST()
 forti = Forti_DST()
@@ -74,7 +75,10 @@ class PALO_Cfg:
                 # Because the platform does not support name start with Digits!
                 if application_name[:1].isdigit():
                     application_name = 'custom_' + application_name
-                
+                if "," in destination_port:
+                    # instead of skipping, creating single services and than a group would make more sense in the future
+                    logger.warn(f"Skipping Service {application_name} since it has multiple ports set, which checkpoint can't handle. Please add it manually afterwards")
+                    continue
                 chpoint.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
 
                         
@@ -96,7 +100,9 @@ class PALO_Cfg:
             except:
                 logger.info('Service-group is not in policy')
                 continue
-
+        if not isinstance(applications_list,list):
+            # if only one applications_list exists
+            applications_list = [applications_list]
         for index in range(len(applications_list)):
             app_list = []
             app_set_name = applications_list[index].get('@name', 'None')
@@ -117,7 +123,7 @@ class PALO_Cfg:
             elif self.vendor == 'srx':
                 srx.service_set(app_set_name, app_name)
             elif self.vendor == 'chpoint':
-                chpoint.address_set(app_set_name, app_list, app_set_desc)
+                chpoint.service_set(app_set_name, app_list, app_set_desc)
 
     
     @property
@@ -157,11 +163,23 @@ class PALO_Cfg:
                 srx.address(address_name, address_ip, address_description)
 
             elif self.vendor == 'chpoint':
+                if "/" not in address_ip:
+                    address_ip = address_ip+"/32"
+                try:
+                    ip_network(address_ip, strict=True)
+                    # address_ip is a valid network address (or a valid host with /32 mask) -->nothing to do
+                except ValueError:
+                    # address_ip is a palo specific host address that also has a network mask
+                    # --> convert to Host
+                    address_ip = address_ip.split("/")[0]+"/32"
                 chpoint.address(address_name, address_ip, address_description)
 
 
         
         if address_set_books:
+            if not isinstance(address_set_books,list):
+                # if only one address-group exists
+                address_set_books = [address_set_books]
             for index in range(len(address_set_books)):
                 address_name_list = []
                 address_set_name = address_set_books[index].get('@name', 'None')

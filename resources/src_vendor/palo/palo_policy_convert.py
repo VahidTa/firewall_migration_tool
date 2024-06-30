@@ -103,10 +103,10 @@ def palo_policy(file: str, vendor: str):
 
         if isinstance(source_address_list, (list)):
             for sub_index in range(len(source_address_list)):
-                policy_source_address = source_address_list[sub_index]
-                policy_src_list.append(policy_source_address)
+                policy_src_address = source_address_list[sub_index]
+                policy_src_list.append(policy_src_address)
         else:
-            policy_source_address = source_address_list
+            policy_src_address = source_address_list
         
         if isinstance(destination_address_list, (list)):
             for sub_index in range(len(destination_address_list)):
