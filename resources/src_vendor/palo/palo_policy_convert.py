@@ -103,10 +103,10 @@ def palo_policy(file: str, vendor: str):
 
         if isinstance(source_address_list, (list)):
             for sub_index in range(len(source_address_list)):
-                policy_source_address = source_address_list[sub_index]
-                policy_src_list.append(policy_source_address)
+                policy_src_address = source_address_list[sub_index]
+                policy_src_list.append(policy_src_address)
         else:
-            policy_source_address = source_address_list
+            policy_src_address = source_address_list
         
         if isinstance(destination_address_list, (list)):
             for sub_index in range(len(destination_address_list)):
@@ -117,7 +117,7 @@ def palo_policy(file: str, vendor: str):
         
         if isinstance(service_address_list, (list)):
             for sub_index in range(len(service_address_list)):
-                policy_app = destination_address_list[sub_index]
+                policy_app = service_address_list[sub_index]
                 policy_app_list.append(policy_app)
         else:
             policy_app = service_address_list
@@ -202,7 +202,7 @@ def palo_policy(file: str, vendor: str):
                     dst_list.append(f'destination.{i+1} "{policy_dst_list[i]}"')
                 policy_dst_address = ' '.join(dst_list)
             else:
-                policy_dst_address = f'destination "{policy_dst_address}"'
+                policy_dst_address = f'destination "{"Any" if str(policy_dst_address).strip().lower() == "any" else policy_dst_address}"' #checkpoint need to have "Any" as string not "any" (Case is important)
             
             if policy_src_list:
                 src_list = []
@@ -210,7 +210,7 @@ def palo_policy(file: str, vendor: str):
                     src_list.append(f'source.{i+1} "{policy_src_list[i]}"')
                 policy_src_address = ' '.join(src_list)
             else:
-                policy_src_address = f'source "{policy_src_address}"'
+                policy_src_address = f'source "{"Any" if str(policy_src_address).strip().lower() == "any" else  policy_src_address}"' #checkpoint need to have "Any" as string not "any" (Case is important)
             if policy_app_list:
                 app_list = []
                 for i in range(len(policy_app_list)):
@@ -223,7 +223,12 @@ def palo_policy(file: str, vendor: str):
             else:
                 if policy_app[:1].isdigit():
                     policy_app = 'custom_' + policy_app
-                policy_app = f'service "{policy_app}"'
+                elif str(policy_app).strip().lower() == "any" :
+                    policy_app = "Any" #checkpoint need to have "Any" as string not "any" (Case is important)
+                elif str(policy_app).strip().lower() == "application-default":
+                    policy_app = "Any" #application-default concept does not exist in checkpoint (see https://knowledgebase.paloaltonetworks.com/KCSArticleDetail?id=kA10g000000ClVwCAK)
+                policy_app = f'service {policy_app}'
+                
             
             chpoint = CHPoint_DST()
             chpoint.policy(
