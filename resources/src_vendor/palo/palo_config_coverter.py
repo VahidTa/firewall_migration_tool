@@ -9,6 +9,7 @@ from resources.dst_vendor.dst_forti import Forti_DST
 from resources.dst_vendor.dst_asa import ASA_DST
 from resources.dst_vendor.dst_chpoint import CHPoint_DST
 from resources.src_vendor.palo.palo_policy_convert import palo_policy
+from ipaddress import ip_network
 
 srx = SRX_DST()
 forti = Forti_DST()
@@ -61,6 +62,9 @@ class PALO_Cfg:
 
             
             if self.vendor == 'forti':
+                # On a FortiGate a service with multiple ports is separated by a space, not a semicolon
+                destination_port = destination_port.replace(","," ")
+
                 forti.service(application_name, destination_port, source_port, application_protocol, application_desc, session_ttl)
             elif self.vendor == 'asa':
                 asa.service(application_name, destination_port, source_port, application_protocol, application_desc)
@@ -96,6 +100,9 @@ class PALO_Cfg:
             except:
                 logger.info('Service-group is not in policy')
                 continue
+        if not isinstance(applications_list,list):
+            # if only one applications_list exists
+            applications_list = [applications_list]
 
         for index in range(len(applications_list)):
             app_list = []
@@ -148,6 +155,15 @@ class PALO_Cfg:
 
 
             if self.vendor == 'forti':
+                try:
+                    ip_network(address_ip, strict=True)
+                    # address_ip is a valid network address (or a valid host with /32 mask) --> convert to FortiGate format
+                    address_ip = ip_network(address_ip, strict=True).with_netmask.replace("/"," ")
+                except ValueError:
+                    # address_ip is a palo specific host address (a host address with a network mask, wich is only there to indicate the subnet, but is not used so it should be replaced)
+                    # for example 192.168.1.123/24 should be converted to 192.168.1.123 255.255.255.255
+                    # --> manual convertion to FortiGate format
+                    address_ip = address_ip.split("/")[0]+" 255.255.255.255"
                 forti.address(address_name, address_ip, address_description)
             
             elif self.vendor == 'asa':
@@ -162,6 +178,9 @@ class PALO_Cfg:
 
         
         if address_set_books:
+            if not isinstance(address_set_books,list):
+                # if only one address-group exists
+                address_set_books = [address_set_books]
             for index in range(len(address_set_books)):
                 address_name_list = []
                 address_set_name = address_set_books[index].get('@name', 'None')
