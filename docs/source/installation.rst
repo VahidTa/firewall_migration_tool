@@ -7,8 +7,10 @@ Bash
 ****
 
 - Make a clone from the `Firewall Migration Tool <https://github.com/VahidTa/firewall_migration_tool>`_ link
+- Create a virtual env: ``python3.13 -m venv .venv``
+- Activate the virtual env: ``source .venv/bin/activate``
 - Use ``pip install -r requirements.txt`` to install required packages
-- Start the app using ``python3 app.py``
+- Start the app using ``python app.py``
 - Connect to ``http://localhost:5000`` on browser.
 
 Container

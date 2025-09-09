@@ -8,7 +8,7 @@ fwmig tool helps you to migrate from one existing firewall to another one with s
 - There is no online dependencies after you run the app.
 - Dockerfile is available for container implementaions.
 - Logging for troubleshoot is implemented.
-- Tested on python 3.9, 3.10, 3.11, 3.12, 3.13
+- Tested on python 3.9, 3.10, 3.11, 3.12, and 3.13
 
 |
 
