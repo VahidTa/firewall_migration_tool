@@ -1,13 +1,13 @@
 # Firewall Migration Tool
 
-fwmig tool helps you to migrate from one existing firewall to another one with simple copy/past steps.
+The Fwmig tool helps you migrate from one firewall to another using simple copy-and-paste steps.
 
-- It supports most well-known vendors.
-- This Tool is based on Flask and JS to provide Web UI for conversion of firewall objects and policies.
-- There is no online dependencies after you run the app.
-- Dockerfile is available for container implementaions.
-- Logging for troubleshoot is implemented.
-- Tested on python 3.9, 3.10, 3.11, 3.12, and 3.13
+- Multi-Vendor Support: Compatible with most major firewall vendors.
+- Web-Based Interface: Built with Flask and JavaScript, it provides an intuitive web UI to convert firewall objects and policies.
+- Offline Operation: The application runs self-contained without requiring an internet connection once started.
+- Container-Ready: Includes a Dockerfile for straightforward deployment in containerized environments.
+- Built-in Logging: Implements comprehensive logging to simplify troubleshooting.
+- Python Compatibility: Fully tested and compatible with Python versions 3.9, 3.10, 3.11, 3.12, and 3.13.
 
 ----
 ## Run the code:
@@ -95,4 +95,4 @@ Firewall Migration Tool (fwmig) documentation lives at [fwmig.readthedocs.io](ht
 
 # Feedback
 
-Please share your experience with me about Firewall Migration Tool through [@tavajjohi](https://twitter.com/tavajjohi) on twitter.
+Please share your experience with me about Firewall Migration Tool through [@tavajjohi](https://x.com/tavajjohi) on X (formerly Twitter).
