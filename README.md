@@ -12,17 +12,32 @@ The Fwmig tool helps you migrate from one firewall to another using simple copy-
 ----
 ## Run the code:
 
+Clone the repository:
+
+```sh
+git clone https://github.com/VahidTa/firewall_migration_tool.git
+cd firewall_migration_tool
+```
+For running locally, create a virtual environment and install dependencies:
+
 ```sh
 python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python app.py
 ```
-Or use Docker:
+For Docker:
 
 ```sh
 docker build -t fwmig .
 docker run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
+```
+
+For Podman:
+
+```sh
+podman build -t fwmig .
+podman run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
 ```
 
 -----
