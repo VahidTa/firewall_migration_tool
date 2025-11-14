@@ -1,103 +1,105 @@
-import xmltodict
+import contextlib
 import json
-import os
 import logging
+import os
 
-from resources.dst_vendor.dst_srx import SRX_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_chpoint import CHPoint_DST
+import xmltodict
+
 from resources.dst_vendor.dst_asa import ASA_DST
+from resources.dst_vendor.dst_chpoint import CHPoint_DST
+from resources.dst_vendor.dst_forti import Forti_DST
+from resources.dst_vendor.dst_srx import SRX_DST
 
 forti_translation = {
-    'allow': 'accept',
-    'no': 'enable',
-    'yes': 'disable',
-    'service-http': 'HTTP',
-    'service-https': 'HTTPS',
+    "allow": "accept",
+    "no": "enable",
+    "yes": "disable",
+    "service-http": "HTTP",
+    "service-https": "HTTPS",
 }
 srx_translation = {
-    'allow': 'permit',
-    'no': 'enabled',
-    'yes': 'disabled',
-    'service-http': 'junos-http',
-    'service-https': 'junos-https',
+    "allow": "permit",
+    "no": "enabled",
+    "yes": "disabled",
+    "service-http": "junos-http",
+    "service-https": "junos-https",
 }
 
 chpoint_translation = {
-    'allow': 'accept',
-    'deny': 'drop',
-    'yes': 'false',
-    'no': 'true',
-    'service-http': 'http',
-    'service-https': 'https',
+    "allow": "accept",
+    "deny": "drop",
+    "yes": "false",
+    "no": "true",
+    "service-http": "http",
+    "service-https": "https",
 }
 
 asa_translation = {
-    'yes': 'inactive',
-    'service-http': ['tcp', 'http'],
-    'service-https': ['tcp', 'https'],
+    "yes": "inactive",
+    "service-http": ["tcp", "http"],
+    "service-https": ["tcp", "https"],
 }
 
-logger = logging.getLogger('fwmig.palo.policy')
+logger = logging.getLogger("fwmig.palo.policy")
+
 
 def palo_policy(file: str, vendor: str):
     """Uses <show security policies | display xml> to provide rule order!"""
-    if not os.path.exists(f'exported/{vendor}'):
-            os.makedirs(f'exported/{vendor}')
+    if not os.path.exists(f"exported/{vendor}"):
+        os.makedirs(f"exported/{vendor}")
     else:
-        try:
-            os.remove(os.path.join(f'exported/{vendor}/', 'policies.txt'))
-        except:
-            pass
-    
+        with contextlib.suppress(BaseException):
+            os.remove(os.path.join(f"exported/{vendor}/", "policies.txt"))
+
     try:
-        with open(f'configs/{file}', 'r') as f:
+        with open(f"configs/{file}") as f:
             my_text = xmltodict.parse(f.read())
     except Exception as err:
-        logger.error(f'Check file format. Maybe <root> tag is not exists!')
+        logger.error("Check file format. Maybe <root> tag is not exists!")
         raise ValueError(err)
 
-    os.remove(f'configs/{file}')
-    
+    os.remove(f"configs/{file}")
+
     try:
         json_formatted = json.dumps(my_text)
-        dict_formatted = json.loads(json_formatted)['root']['response']
-    except:
-        logger.error('<root> or <response> are not exists on the config. Conversion failed!')
+        dict_formatted = json.loads(json_formatted)["root"]["response"]
+    except Exception:
+        logger.error("<root> or <response> are not exists on the config. Conversion failed!")
 
     for i in range(len(dict_formatted)):
         try:
-            if 'rulebase' in dict_formatted[i]['result']:
-                security_cfg = dict_formatted[i]['result']['rulebase']['security']['rules']['entry']
-        except:
+            if "rulebase" in dict_formatted[i]["result"]:
+                security_cfg = dict_formatted[i]["result"]["rulebase"]["security"]["rules"]["entry"]
+        except Exception as exc:
+            logger.error(f"source Paloalto policy error. {exc}")
             continue
     position = 1
 
     try:
         len(security_cfg)
-    except:
+    except Exception:
         raise ValueError("This tool can't work for one rule!")
-    
+
     for main_index in range(len(security_cfg)):
         policy_src_list = []
         policy_dst_list = []
         policy_app_list = []
 
-        policy_name = security_cfg[main_index]['@name']
-        source_zone = security_cfg[main_index]['from']['member']
-        destination_zone = security_cfg[main_index]['to']['member']
-        source_address_list = security_cfg[main_index]['source']['member']
-        destination_address_list = security_cfg[main_index]['destination']['member']
-        service_address_list = security_cfg[main_index]['service']['member']
+        policy_name = security_cfg[main_index]["@name"]
+        source_zone = security_cfg[main_index]["from"]["member"]
+        destination_zone = security_cfg[main_index]["to"]["member"]
+        source_address_list = security_cfg[main_index]["source"]["member"]
+        destination_address_list = security_cfg[main_index]["destination"]["member"]
+        service_address_list = security_cfg[main_index]["service"]["member"]
         # application_address_list = security_cfg[main_index]['application']
         try:
-            policy_state = security_cfg[main_index]['disabled']
-        except:
-            policy_state = 'no'
-        policy_action = security_cfg[main_index]['action']
+            policy_state = security_cfg[main_index]["disabled"]
+        except Exception:
+            policy_state = "no"
+        policy_action = security_cfg[main_index]["action"]
         try:
-            policy_log = security_cfg[main_index]['log-start']
-        except:
+            policy_log = security_cfg[main_index]["log-start"]
+        except Exception:
             policy_log = False
         policy_id = position
 
@@ -107,14 +109,14 @@ def palo_policy(file: str, vendor: str):
                 policy_src_list.append(policy_src_address)
         else:
             policy_src_address = source_address_list
-        
+
         if isinstance(destination_address_list, (list)):
             for sub_index in range(len(destination_address_list)):
                 policy_dst_address = destination_address_list[sub_index]
                 policy_dst_list.append(policy_dst_address)
         else:
             policy_dst_address = destination_address_list
-        
+
         if isinstance(service_address_list, (list)):
             for sub_index in range(len(service_address_list)):
                 policy_app = service_address_list[sub_index]
@@ -122,32 +124,29 @@ def palo_policy(file: str, vendor: str):
         else:
             policy_app = service_address_list
 
-        if policy_log:
-            policy_log = True
-        else:
-            policy_log = False
+        policy_log = bool(policy_log)
         if policy_src_list:
-            policy_src_address = ' '.join(policy_src_list)
+            policy_src_address = " ".join(policy_src_list)
         if policy_dst_list:
-            policy_dst_address = ' '.join(policy_dst_list)
+            policy_dst_address = " ".join(policy_dst_list)
         if policy_app_list:
             try:
-                policy_app = ' '.join(policy_app_list)
-            except:
+                policy_app = " ".join(policy_app_list)
+            except Exception:
                 policy_app = policy_app_list
-        
-        if vendor == 'forti':
+
+        if vendor == "forti":
             policy_state = forti_translation.get(policy_state, policy_state)
             policy_action = forti_translation.get(policy_action, policy_action)
-            if 'any' in policy_src_address:
-                policy_src_address = 'all'
-            if 'any' in policy_dst_address:
-                policy_dst_address = 'all'
-            if policy_app == 'any':
-                policy_app = 'ALL'
+            if "any" in policy_src_address:
+                policy_src_address = "all"
+            if "any" in policy_dst_address:
+                policy_dst_address = "all"
+            if policy_app == "any":
+                policy_app = "ALL"
             if len(policy_name) > 34:
                 policy_name = policy_name[:34]
-            
+
             forti = Forti_DST()
             forti.policy(
                 policy_name,
@@ -159,10 +158,10 @@ def palo_policy(file: str, vendor: str):
                 policy_log,
                 policy_state,
                 policy_action,
-                policy_id
-                )
-            
-        elif vendor == 'asa':
+                policy_id,
+            )
+
+        elif vendor == "asa":
             policy_action = asa_translation.get(policy_action, policy_action)
             asa = ASA_DST()
             asa.policy(
@@ -175,9 +174,9 @@ def palo_policy(file: str, vendor: str):
                 policy_log,
                 policy_state,
                 policy_action,
-                policy_id
-                )
-        elif vendor == 'srx':
+                policy_id,
+            )
+        elif vendor == "srx":
             policy_action = srx_translation.get(policy_action, policy_action)
             srx = SRX_DST()
             srx.policy(
@@ -189,47 +188,46 @@ def palo_policy(file: str, vendor: str):
                 policy_app,
                 policy_log,
                 policy_state,
-                policy_action
-                )
-                
-        elif vendor == 'chpoint':
+                policy_action,
+            )
+
+        elif vendor == "chpoint":
             policy_action = chpoint_translation.get(policy_action, policy_action)
             policy_state = chpoint_translation.get(policy_state, policy_state)
 
             if policy_dst_list:
                 dst_list = []
                 for i in range(len(policy_dst_list)):
-                    dst_list.append(f'destination.{i+1} "{policy_dst_list[i]}"')
-                policy_dst_address = ' '.join(dst_list)
+                    dst_list.append(f'destination.{i + 1} "{policy_dst_list[i]}"')
+                policy_dst_address = " ".join(dst_list)
             else:
-                policy_dst_address = f'destination "{"Any" if str(policy_dst_address).strip().lower() == "any" else policy_dst_address}"' #checkpoint need to have "Any" as string not "any" (Case is important)
-            
+                policy_dst_address = f'destination "{"Any" if str(policy_dst_address).strip().lower() == "any" else policy_dst_address}"'  # checkpoint need to have "Any" as string not "any" (Case is important)
+
             if policy_src_list:
                 src_list = []
                 for i in range(len(policy_src_list)):
-                    src_list.append(f'source.{i+1} "{policy_src_list[i]}"')
-                policy_src_address = ' '.join(src_list)
+                    src_list.append(f'source.{i + 1} "{policy_src_list[i]}"')
+                policy_src_address = " ".join(src_list)
             else:
-                policy_src_address = f'source "{"Any" if str(policy_src_address).strip().lower() == "any" else  policy_src_address}"' #checkpoint need to have "Any" as string not "any" (Case is important)
+                policy_src_address = f'source "{"Any" if str(policy_src_address).strip().lower() == "any" else policy_src_address}"'  # checkpoint need to have "Any" as string not "any" (Case is important)
             if policy_app_list:
                 app_list = []
                 for i in range(len(policy_app_list)):
                     if policy_app_list[i][:1].isdigit():
-                        policy_app = 'custom_' + policy_app_list[i]
+                        policy_app = "custom_" + policy_app_list[i]
                     else:
                         policy_app = policy_app_list[i]
-                    app_list.append(f'service.{i+1} "{policy_app}"')
-                policy_app = ' '.join(app_list)
+                    app_list.append(f'service.{i + 1} "{policy_app}"')
+                policy_app = " ".join(app_list)
             else:
                 if policy_app[:1].isdigit():
-                    policy_app = 'custom_' + policy_app
-                elif str(policy_app).strip().lower() == "any" :
-                    policy_app = "Any" #checkpoint need to have "Any" as string not "any" (Case is important)
+                    policy_app = "custom_" + policy_app
+                elif str(policy_app).strip().lower() == "any":
+                    policy_app = "Any"  # checkpoint need to have "Any" as string not "any" (Case is important)
                 elif str(policy_app).strip().lower() == "application-default":
-                    policy_app = "Any" #application-default concept does not exist in checkpoint (see https://knowledgebase.paloaltonetworks.com/KCSArticleDetail?id=kA10g000000ClVwCAK)
-                policy_app = f'service {policy_app}'
-                
-            
+                    policy_app = "Any"  # application-default concept does not exist in checkpoint (see https://knowledgebase.paloaltonetworks.com/KCSArticleDetail?id=kA10g000000ClVwCAK)
+                policy_app = f"service {policy_app}"
+
             chpoint = CHPoint_DST()
             chpoint.policy(
                 policy_name,
@@ -242,8 +240,7 @@ def palo_policy(file: str, vendor: str):
                 policy_state,
                 policy_action,
                 policy_id,
-                position
+                position,
             )
-            
 
         position += 1

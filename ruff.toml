@@ -1,0 +1,8 @@
+line-length = 120
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "SIM", "C4"]
+ignore = ["E501"]
+
+[format]
+line-ending = "auto"
