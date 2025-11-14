@@ -1,7 +1,8 @@
+from resources.dst_vendor.vendor_abc import VendorAbc
 from resources.ip_address_converter.netmask_convereter import nethost, netmasker
 
 
-class ASA_DST:
+class AsaDst(VendorAbc):
     def service(*args):
         application_name = args[1]
         destination_port = args[2]

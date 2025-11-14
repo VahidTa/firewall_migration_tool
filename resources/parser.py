@@ -7,17 +7,17 @@ logger = logging.getLogger("fwmig.parser")
 
 def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: list[str]) -> bool:
     if src_vendor == "srx":
-        from resources.src_vendor.srx.srx_config_converter import SRX_Cfg
+        from resources.src_vendor.srx.srx_config_converter import SrxCfg
 
-        output = SRX_Cfg(cfg, dst_vendor)
+        output = SrxCfg(cfg, dst_vendor)
     elif src_vendor == "chpoint":
-        from resources.src_vendor.chpoint.chpoint_config_parser import CHP_CFG
+        from resources.src_vendor.chpoint.chpoint_config_parser import ChPointCfg
 
-        output = CHP_CFG(cfg, dst_vendor)
+        output = ChPointCfg(cfg, dst_vendor)
     elif src_vendor == "palo":
-        from resources.src_vendor.palo.palo_config_coverter import PALO_Cfg
+        from resources.src_vendor.palo.palo_config_coverter import PaloCfg
 
-        output = PALO_Cfg(cfg, dst_vendor)
+        output = PaloCfg(cfg, dst_vendor)
     # elif src_vendor == 'asa':
     #     from resources.src_vendor.asa.asa_config_converter import ASA_CFG
     #     output = ASA_CFG(cfg, dst_vendor)

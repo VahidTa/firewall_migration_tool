@@ -5,10 +5,10 @@ import os
 
 import xmltodict
 
-from resources.dst_vendor.dst_asa import ASA_DST
-from resources.dst_vendor.dst_chpoint import CHPoint_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_srx import SRX_DST
+from resources.dst_vendor.dst_asa import AsaDst
+from resources.dst_vendor.dst_chpoint import ChPointDst
+from resources.dst_vendor.dst_forti import FortiDst
+from resources.dst_vendor.dst_srx import SrxDst
 
 forti_translation = {
     "allow": "accept",
@@ -70,8 +70,8 @@ def palo_policy(file: str, vendor: str):
         try:
             if "rulebase" in dict_formatted[i]["result"]:
                 security_cfg = dict_formatted[i]["result"]["rulebase"]["security"]["rules"]["entry"]
-        except Exception as exc:
-            logger.error(f"source Paloalto policy error. {exc}")
+        except Exception:
+            logger.error(f"source Paloalto policy error: {dict_formatted[i]}")
             continue
     position = 1
 
@@ -147,7 +147,7 @@ def palo_policy(file: str, vendor: str):
             if len(policy_name) > 34:
                 policy_name = policy_name[:34]
 
-            forti = Forti_DST()
+            forti = FortiDst()
             forti.policy(
                 policy_name,
                 source_zone,
@@ -163,7 +163,7 @@ def palo_policy(file: str, vendor: str):
 
         elif vendor == "asa":
             policy_action = asa_translation.get(policy_action, policy_action)
-            asa = ASA_DST()
+            asa = AsaDst()
             asa.policy(
                 policy_name,
                 source_zone,
@@ -178,7 +178,7 @@ def palo_policy(file: str, vendor: str):
             )
         elif vendor == "srx":
             policy_action = srx_translation.get(policy_action, policy_action)
-            srx = SRX_DST()
+            srx = SrxDst()
             srx.policy(
                 policy_name,
                 source_zone,
@@ -228,7 +228,7 @@ def palo_policy(file: str, vendor: str):
                     policy_app = "Any"  # application-default concept does not exist in checkpoint (see https://knowledgebase.paloaltonetworks.com/KCSArticleDetail?id=kA10g000000ClVwCAK)
                 policy_app = f"service {policy_app}"
 
-            chpoint = CHPoint_DST()
+            chpoint = ChPointDst()
             chpoint.policy(
                 policy_name,
                 source_zone,

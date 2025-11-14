@@ -5,20 +5,20 @@ from ipaddress import ip_network
 
 import xmltodict
 
-from resources.dst_vendor.dst_asa import ASA_DST
-from resources.dst_vendor.dst_chpoint import CHPoint_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_srx import SRX_DST
+from resources.dst_vendor.dst_asa import AsaDst
+from resources.dst_vendor.dst_chpoint import ChPointDst
+from resources.dst_vendor.dst_forti import FortiDst
+from resources.dst_vendor.dst_srx import SrxDst
 from resources.src_vendor.palo.palo_policy_convert import palo_policy
 
-srx = SRX_DST()
-forti = Forti_DST()
-asa = ASA_DST()
-chpoint = CHPoint_DST()
+srx = SrxDst()
+forti = FortiDst()
+asa = AsaDst()
+chpoint = ChPointDst()
 logger = logging.getLogger("fwmig.palo.config")
 
 
-class PALO_Cfg:
+class PaloCfg:
     """Converts PA -> Fortigate, ASA, Forti, Palo Alto (except zone and interfaces)"""
 
     def __init__(self, cfg_file: str, vendor: str) -> None:
@@ -49,8 +49,8 @@ class PALO_Cfg:
             try:
                 if "service" in dict_formatted[i]["result"]:
                     applications_list = dict_formatted[i]["result"]["service"]["entry"]
-            except Exception as exc:
-                logger.error(f"PaloAlto config error: {exc}. skiping ...")
+            except Exception:
+                logger.warning(f"PaloAlto config error: {dict_formatted[i]}. skiping ...")
                 continue
 
         for index in range(len(applications_list)):
@@ -104,8 +104,8 @@ class PALO_Cfg:
                 if "service-group" in dict_formatted[i]["result"]:
                     applications_list = dict_formatted[i]["result"]["service-group"]["entry"]
                     logger.info("Service-group exists in policy")
-            except Exception as exc:
-                logger.error(f"Service-group is not in policy. {exc}")
+            except Exception:
+                logger.warning(f"Service-group is not in policy. {dict_formatted[i]}. \nskipping ...")
                 continue
         if not isinstance(applications_list, list):
             # if only one applications_list exists
@@ -146,8 +146,8 @@ class PALO_Cfg:
                     address_list = dict_formatted[i]["result"]["address"]["entry"]
                 elif "address-group" in dict_formatted[i]["result"]:
                     address_set_books = dict_formatted[i]["result"]["address-group"]["entry"]
-            except Exception as exc:
-                logger.error(f"Address-group or address is not in policy: {exc}. skipping ...")
+            except Exception:
+                logger.warning(f"Address-group or address is not in policy: {dict_formatted[i]}. \nskipping ...")
                 continue
 
         for index in range(len(address_list)):
