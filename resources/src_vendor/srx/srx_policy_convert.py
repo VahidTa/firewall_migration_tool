@@ -4,10 +4,10 @@ import os
 
 import xmltodict
 
-from resources.dst_vendor.dst_asa import ASA_DST
-from resources.dst_vendor.dst_chpoint import CHPoint_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_palo import Palo_DST
+from resources.dst_vendor.dst_asa import AsaDst
+from resources.dst_vendor.dst_chpoint import ChPointDst
+from resources.dst_vendor.dst_forti import FortiDst
+from resources.dst_vendor.dst_palo import PaloDst
 
 forti_translation = {
     "permit": "accept",
@@ -283,7 +283,7 @@ def srx_policy(file: str, vendor: str):
                 if len(policy_name) > 34:
                     policy_name = policy_name[:34]
 
-                forti = Forti_DST()
+                forti = FortiDst()
                 forti.policy(
                     policy_name,
                     source_zone,
@@ -299,7 +299,7 @@ def srx_policy(file: str, vendor: str):
 
             elif vendor == "asa":
                 policy_action = asa_translation.get(policy_action, policy_action)
-                asa = ASA_DST()
+                asa = AsaDst()
                 asa.policy(
                     policy_name,
                     source_zone,
@@ -314,7 +314,7 @@ def srx_policy(file: str, vendor: str):
                 )
             elif vendor == "palo":
                 policy_action = palo_translation.get(policy_action, policy_action)
-                palo = Palo_DST()
+                palo = PaloDst()
                 palo.policy(
                     policy_name,
                     source_zone,
@@ -361,7 +361,7 @@ def srx_policy(file: str, vendor: str):
 
                     policy_app = f'service "{policy_app}"'
 
-                chpoint = CHPoint_DST()
+                chpoint = ChPointDst()
                 chpoint.policy(
                     policy_name,
                     source_zone,

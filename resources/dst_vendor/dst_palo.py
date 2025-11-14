@@ -1,7 +1,9 @@
 import os
 
+from resources.dst_vendor.vendor_abc import VendorAbc
 
-class Palo_DST:
+
+class PaloDst(VendorAbc):
     def service(*args):
         application_name = args[1]
         destination_port = args[2]

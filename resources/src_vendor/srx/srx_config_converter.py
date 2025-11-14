@@ -4,10 +4,10 @@ import os
 
 import xmltodict
 
-from resources.dst_vendor.dst_asa import ASA_DST
-from resources.dst_vendor.dst_chpoint import CHPoint_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_palo import Palo_DST
+from resources.dst_vendor.dst_asa import AsaDst
+from resources.dst_vendor.dst_chpoint import ChPointDst
+from resources.dst_vendor.dst_forti import FortiDst
+from resources.dst_vendor.dst_palo import PaloDst
 from resources.src_vendor.srx.srx_policy_convert import (
     asa_translation,
     chpoint_translation,
@@ -16,14 +16,14 @@ from resources.src_vendor.srx.srx_policy_convert import (
     srx_policy,
 )
 
-palo = Palo_DST()
-forti = Forti_DST()
-asa = ASA_DST()
-chpoint = CHPoint_DST()
+palo = PaloDst()
+forti = FortiDst()
+asa = AsaDst()
+chpoint = ChPointDst()
 logger = logging.getLogger("fwmig.srx.config")
 
 
-class SRX_Cfg:
+class SrxCfg:
     """Converts SRX -> Fortigate, ASA, Forti, Palo Alto (except zone and interfaces)"""
 
     def __init__(self, cfg_file: str, vendor: str) -> None:

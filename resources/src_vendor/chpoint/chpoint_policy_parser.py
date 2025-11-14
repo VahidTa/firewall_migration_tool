@@ -4,10 +4,10 @@ import os
 
 import pandas as pd
 
-from resources.dst_vendor.dst_asa import ASA_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_palo import Palo_DST
-from resources.dst_vendor.dst_srx import SRX_DST
+from resources.dst_vendor.dst_asa import AsaDst
+from resources.dst_vendor.dst_forti import FortiDst
+from resources.dst_vendor.dst_palo import PaloDst
+from resources.dst_vendor.dst_srx import SrxDst
 
 logger = logging.getLogger("fwmig.src.checkpoint.policy")
 
@@ -179,7 +179,7 @@ def chpoint_policy(file: str, vendor: str):
             if policy_app == "Any":
                 policy_app = "ALL"
 
-            forti = Forti_DST()
+            forti = FortiDst()
             forti.policy(
                 policy_name,
                 source_zone,
@@ -201,7 +201,7 @@ def chpoint_policy(file: str, vendor: str):
                 policy_dst_address == "any"
             if policy_app == "Any":
                 policy_app = "any"
-            asa = ASA_DST()
+            asa = AsaDst()
             asa.policy(
                 policy_name,
                 source_zone,
@@ -216,7 +216,7 @@ def chpoint_policy(file: str, vendor: str):
             )
         elif vendor == "palo":
             policy_action = palo_translation.get(policy_action, policy_action)
-            palo = Palo_DST()
+            palo = PaloDst()
             palo.policy(
                 policy_name,
                 source_zone,
@@ -236,7 +236,7 @@ def chpoint_policy(file: str, vendor: str):
                 policy_dst_address == "any"
             if policy_app == "Any":
                 policy_app = "any"
-            srx = SRX_DST()
+            srx = SrxDst()
             srx.policy(
                 policy_name,
                 source_zone,

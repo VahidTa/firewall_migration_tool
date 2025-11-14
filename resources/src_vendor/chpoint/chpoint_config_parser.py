@@ -2,20 +2,20 @@ import os
 
 import pandas as pd
 
-from resources.dst_vendor.dst_asa import ASA_DST
-from resources.dst_vendor.dst_forti import Forti_DST
-from resources.dst_vendor.dst_palo import Palo_DST
-from resources.dst_vendor.dst_srx import SRX_DST
+from resources.dst_vendor.dst_asa import AsaDst
+from resources.dst_vendor.dst_forti import FortiDst
+from resources.dst_vendor.dst_palo import PaloDst
+from resources.dst_vendor.dst_srx import SrxDst
 from resources.ip_address_converter.netmask_convereter import prefixer
 from resources.src_vendor.chpoint.chpoint_policy_parser import chpoint_policy
 
-forti = Forti_DST()
-asa = ASA_DST()
-palo = Palo_DST()
-srx = SRX_DST()
+forti = FortiDst()
+asa = AsaDst()
+palo = PaloDst()
+srx = SrxDst()
 
 
-class CHP_CFG:
+class ChPointCfg:
     def __init__(self, cfg_file: str, vendor: str) -> None:
         self.cfg_file = cfg_file
         self.vendor = vendor
