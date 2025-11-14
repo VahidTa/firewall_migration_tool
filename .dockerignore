@@ -4,3 +4,4 @@ __pycache__
 test.py
 .gitignore
 .dockerignore
+.venv*
