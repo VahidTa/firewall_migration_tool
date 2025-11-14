@@ -54,4 +54,4 @@ Getting Start:
 Feedback
 ********
 
-Please share your experience with me about Firewall Migration Tool through `@tavajjohi <https://twitter.com/tavajjohi>`_ on twitter.
+Please share your experience with me about Firewall Migration Tool through `@tavajjohi <https://x.com/tavajjohi>`_ on X (formerly Twitter)
