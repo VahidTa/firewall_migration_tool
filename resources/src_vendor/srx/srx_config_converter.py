@@ -60,7 +60,16 @@ class SrxCfg:
                     application_name, destination_port, source_port, application_protocol, application_desc, session_ttl
                 )
             elif self.vendor == "asa":
-                asa.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                asa.service(
+                    application_name,
+                    destination_port,
+                    source_port,
+                    application_protocol,
+                    application_desc,
+                    None,
+                    None,
+                    None,
+                )
 
             elif self.vendor == "palo":
                 if session_ttl == "never":
@@ -176,9 +185,9 @@ class SrxCfg:
                         address_name = address_list[i][0]
                         address_description = address_list[i][1]
                         address_ip = address_list[i][2]
-                        asa.address(address_name, address_ip, address_description)
+                        asa.address(address_name, address_ip, address_description, None)
                 else:
-                    asa.address(address_name, address_ip, address_description)
+                    asa.address(address_name, address_ip, address_description, None)
 
             elif self.vendor == "palo":
                 if address_list:
@@ -186,9 +195,9 @@ class SrxCfg:
                         address_name = address_list[i][0]
                         address_description = address_list[i][1]
                         address_ip = address_list[i][2]
-                        palo.address(address_name, address_ip, address_description)
+                        palo.address(address_name, address_ip, address_description, None)
                 else:
-                    palo.address(address_name, address_ip, address_description)
+                    palo.address(address_name, address_ip, address_description, None)
 
             elif self.vendor == "chpoint":
                 if address_list:

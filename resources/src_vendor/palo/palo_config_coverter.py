@@ -67,11 +67,27 @@ class PaloCfg:
                     application_name, destination_port, source_port, application_protocol, application_desc, session_ttl
                 )
             elif self.vendor == "asa":
-                asa.service(application_name, destination_port, source_port, application_protocol, application_desc)
+                asa.service(
+                    application_name,
+                    destination_port,
+                    source_port,
+                    application_protocol,
+                    application_desc,
+                    None,
+                    None,
+                    None,
+                )
 
             elif self.vendor == "srx":
                 srx.service(
-                    application_name, destination_port, source_port, application_protocol, application_desc, session_ttl
+                    application_name,
+                    destination_port,
+                    source_port,
+                    application_protocol,
+                    application_desc,
+                    None,
+                    None,
+                    None,
                 )
 
             elif self.vendor == "chpoint":
@@ -127,7 +143,7 @@ class PaloCfg:
             elif self.vendor == "asa":
                 asa.service_set(app_set_name, app_list, app_set_desc)
             elif self.vendor == "srx":
-                srx.service_set(app_set_name, app_name)
+                srx.service_set(app_set_name, app_list, app_set_desc)
             elif self.vendor == "chpoint":
                 chpoint.service_set(app_set_name, app_list, app_set_desc)
 
@@ -161,10 +177,10 @@ class PaloCfg:
                 forti.address(address_name, address_ip, address_description)
 
             elif self.vendor == "asa":
-                asa.address(address_name, address_ip, address_description)
+                asa.address(address_name, address_ip, address_description, None)
 
             elif self.vendor == "srx":
-                srx.address(address_name, address_ip, address_description)
+                srx.address(address_name, address_ip, address_description, None)
 
             elif self.vendor == "chpoint":
                 if "/" not in address_ip:
@@ -198,7 +214,7 @@ class PaloCfg:
                 elif self.vendor == "asa":
                     asa.address_set(address_set_name, address_name_list, address_set_desc)
                 elif self.vendor == "srx":
-                    srx.address_set(address_set_name, address_name, address_set_desc)
+                    srx.address_set(address_set_name, address_name_list, address_set_desc)
                 elif self.vendor == "chpoint":
                     chpoint.address_set(address_set_name, address_name_list, address_set_desc)
 

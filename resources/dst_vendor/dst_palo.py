@@ -35,13 +35,16 @@ class PaloDst(VendorAbc):
         address_name = args[1]
         address_ip = args[2]
         address_desc = args[3]
+        address_type = args[4] or "subnet"
 
         with open("exported/palo/addresses.txt", "a") as f:
-            if "-" in address_ip:
+            if address_type == "range":
                 address_ip = address_ip.replace(" ", "")
                 f.write(f"set address {address_name} ip-range {address_ip}\n\n")
-            else:
+            elif address_type == "subnet":
                 f.write(f"set address {address_name} ip-netmask {address_ip}\n\n")
+            elif address_type == "fqdn":
+                f.write(f"set address {address_name} fqdn {address_ip}\n\n")
             if address_desc:
                 f.write(f'set address {address_name} description "{address_desc}"\n\n')
 
@@ -49,6 +52,9 @@ class PaloDst(VendorAbc):
         address_set_name = args[1]
         address_name = args[2]
         address_set_desc = args[3]
+
+        if " " in address_set_name:
+            address_set_name = f'"{address_set_name}"'
 
         with open("exported/palo/address_group.txt", "a") as f:
             f.write(f"set address-group {address_set_name} static [ {address_name} ]\n\n")

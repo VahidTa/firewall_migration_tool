@@ -50,6 +50,9 @@ class ChPointDst(VendorAbc):
         address_name = args[1]
         address_ip = args[2]
         address_desc = args[3]
+        address_type = args[4] or ""
+        if address_type in ("fqdn", "range"):
+            return
 
         if "/32" in address_ip:
             address_netmask = nethost(address_ip)

@@ -53,11 +53,11 @@ class ChPointCfg:
             if self.vendor == "forti":
                 forti.address(address_name, address_ip, address_description)
             elif self.vendor == "asa":
-                asa.address(address_name, address_ip, address_description)
+                asa.address(address_name, address_ip, address_description, None)
             elif self.vendor == "palo":
-                palo.address(address_name, address_ip, address_description)
+                palo.address(address_name, address_ip, address_description, None)
             elif self.vendor == "srx":
-                srx.address(address_name, address_ip, address_description)
+                srx.address(address_name, address_ip, address_description, None)
 
     @property
     def policy(self):

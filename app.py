@@ -10,7 +10,7 @@ from resources.parser import main_parser
 logger = app_logger()
 
 UPLOAD_FOLDER = "configs/"
-ALLOWED_EXTENSIONS = {"txt", "log", "csv"}
+ALLOWED_EXTENSIONS = {"txt", "log", "csv", "yaml", "yml"}
 
 app = Flask(__name__, template_folder="resources/web/templates", static_folder="resources/web/static")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -63,7 +63,7 @@ def main():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            if src_vendor not in ["asa", "forti"]:
+            if src_vendor not in ("asa",):
                 acts = request.form.getlist("acts")
                 action = request.form.get("action")
                 if action == "config" and not acts:
@@ -89,7 +89,7 @@ def main():
                 return redirect(request.url)
 
         else:
-            flash("File not supported. (txt, log, csv)")
+            flash("File not supported. (txt, log, csv, yaml)")
             return redirect(request.url)
     return render_template("home.html")
 
