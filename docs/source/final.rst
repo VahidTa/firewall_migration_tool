@@ -48,7 +48,7 @@ Fortigate
 Because of the platform limitations, Policy names will be support upto 35 charachters. So, if there is a policy name with more than 35 charachter length will be convert to only first 35 characters.
 
 * Login to the device
-* You must copy/paste configuration first and then configuration.
+* You must copy/paste configuration first and then the policy.
 
 Palo Alto
 *********
@@ -57,7 +57,7 @@ May not allow more than 30 inputs in one copy/paste. So partition the output in 
 
 * Login to the device
 * Enter to config mode
-* You must copy/paste configuration first and then configuration
+* You must copy/paste configuration first and then the policy.
 * Commit the configuration at the end
 
 
@@ -68,5 +68,5 @@ For SRX, output file is "set" based.
 
 * Login to the device
 * Enter to config mode
-* You must copy/paste configuration first and then configuration
+* You must copy/paste configuration first and then the policy.
 * Commit the configuration at the end
