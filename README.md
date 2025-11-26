@@ -67,11 +67,11 @@ podman run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:lat
     </tr>
     <tr>
         <td><strong>Fortigate</strong></td>
-        <td>No</td>
+        <td>Yes</td>
         <td>N/A</td>
+        <td>Yes</td>
         <td>No</td>
-        <td>No</td>
-        <td>No</td>
+        <td>Yes</td>
     </tr>
     <tr>
         <td><strong>Cisco ASA</strong></td>

@@ -18,6 +18,10 @@ def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: l
         from resources.src_vendor.palo.palo_config_coverter import PaloCfg
 
         output = PaloCfg(cfg, dst_vendor)
+    elif src_vendor == "forti":
+        from resources.src_vendor.forti.forti_config_converter import FortiCfg
+
+        output = FortiCfg(cfg, dst_vendor)
     # elif src_vendor == 'asa':
     #     from resources.src_vendor.asa.asa_config_converter import ASA_CFG
     #     output = ASA_CFG(cfg, dst_vendor)
@@ -52,7 +56,7 @@ def main_parser(action: str, cfg: str, src_vendor: str, dst_vendor: str, acts: l
         logger.info("Conversion finished successfully!")
         return True
     except Exception as err:
-        logger.warning(f"Conversion Failed! Please re-check file content or Source vendor. {err}")
+        logger.warning(f"Conversion Failed! Please re-check file content or Source vendor. {err}", exc_info=True)
         logger.info(50 * "=")
         with contextlib.suppress(BaseException):
             os.remove(f"configs/{cfg}")

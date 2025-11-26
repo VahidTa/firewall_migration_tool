@@ -1,6 +1,18 @@
 from resources.dst_vendor.vendor_abc import VendorAbc
 from resources.ip_address_converter.netmask_convereter import nethost, netmasker
 
+protocol_mapper = {
+    89: "ospf",
+    51: "ah",
+    47: "gre",
+    50: "esp",
+    2: "igmp",
+    4: "ipip",
+    103: "pim",
+    46: "rsvp",
+    132: "sctp",
+}
+
 
 class AsaDst(VendorAbc):
     def service(*args):
@@ -9,21 +21,41 @@ class AsaDst(VendorAbc):
         source_port = args[3]
         application_protocol = args[4]
         application_desc = args[5]
+        protocol_number = args[6]
+        icmp_code = args[7]
+        icmp_type = args[8]
+
+        if " " in application_name:
+            application_name = f'"{application_name}"'
 
         with open("exported/asa/service_objects.txt", "a") as f:
             f.write(f"object service {application_name}\n")
             if destination_port:
+                destination_port = str(destination_port)
                 if "-" in destination_port:
                     destination_port = destination_port.replace("-", " ")
                     f.write(f"service {application_protocol} destination range {destination_port}\n")
                 else:
                     f.write(f"service {application_protocol} destination eq {destination_port}\n")
             elif source_port:
+                source_port = str(source_port)
                 if "-" in source_port:
                     source_port = source_port.replace("-", " ")
                     f.write(f"service {application_protocol} source range {source_port}\n")
                 else:
                     f.write(f"service {application_protocol} source eq {source_port}\n")
+            if application_protocol == "IP" and protocol_number == 0:
+                f.write("service IP\n")
+            elif protocol_number:
+                f.write(f"service {protocol_mapper.get(protocol_number, protocol_number)}\n")
+            elif application_protocol == "ICMP":
+                cmd = "service icmp"
+                if icmp_type:
+                    cmd += f" {icmp_type}"
+                if icmp_code:
+                    cmd += f" {icmp_code}"
+                cmd += "\n"
+                f.write(cmd)
             if application_desc:
                 f.write(f"description {application_desc} \n")
             f.write("exit\n\n")
@@ -32,6 +64,9 @@ class AsaDst(VendorAbc):
         app_set_name = args[1]
         app_list = args[2]
         app_set_desc = args[3]
+
+        if " " in app_set_name:
+            app_set_name = f'"{app_set_name}"'
 
         with open("exported/asa/service_object_group.txt", "a") as f:
             f.write(f"object-group service {app_set_name}\n")
@@ -44,16 +79,19 @@ class AsaDst(VendorAbc):
                 else:
                     f.write(f"service-object object {object} \n")
             if app_set_desc:
-                f.write(f'description "{app_set_desc}" \n')
+                f.write(f"description {app_set_desc} \n")
             f.write("exit\n\n")
 
     def address(*args):
         address_name = args[1]
         address_ip = args[2]
         address_desc = args[3]
+        address_type = args[4] or ""
 
         with open("exported/asa/object_network.txt", "a") as f:
-            if "-" in address_ip:
+            if address_type == "fqdn":
+                address_netmask = f"fqdn {address_ip}"
+            elif "-" in address_ip:
                 start_ip = address_ip.split("-")[0].replace(" ", "")
                 end_ip = address_ip.split("-")[1].replace(" ", "")
                 address_netmask = f"range {start_ip} {end_ip}"
