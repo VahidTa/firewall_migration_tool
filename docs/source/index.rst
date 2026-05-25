@@ -46,6 +46,7 @@ Getting Start:
 
    installation
    srx
+   forti
    palo
    chpoint
    final
