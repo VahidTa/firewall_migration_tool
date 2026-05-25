@@ -167,7 +167,7 @@ class AsaDst(VendorAbc):
                         if dst[1] == "na":
                             output.write(f" service-object {dst[0]}\n")
                         else:
-                            dst = f"{dst[0]} destionation eq {dst[1]}"
+                            dst = f"{dst[0]} destination eq {dst[1]}"
                             output.write(f" service-object {dst}\n")
                     else:
                         output.write(f" service-object object {dst}\n")
@@ -181,7 +181,7 @@ class AsaDst(VendorAbc):
                         if dst[1] == "na":
                             output.write(f" service-object {dst[0]}\n")
                         else:
-                            dst = f"{dst[0]} destionation eq {dst[1]}"
+                            dst = f"{dst[0]} destination eq {dst[1]}"
                             output.write(f" service-object {dst}\n")
                     else:
                         output.write(f" service-object object {dst}\n")

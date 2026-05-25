@@ -58,7 +58,6 @@ srx_translation = {
     "ssh": "junos-ssh",
     "telnet": "junos-telnet",
     "echo-request": "junos-ping",
-    "echo-request": "junos-icmp-ping",  # noqa: F601
     "ntp-udp": "junos-ntp",
     "nntp": "junos-nntp",
     "http": "junos-http",
@@ -92,14 +91,13 @@ asa_translation = {
     "rtsp": ["tcp", "rtsp"],
     "ssh": ["tcp", "ssh"],
     "telnet": ["tcp", "telnet"],
-    "echo-request": ["icmp", "na"],
+    "echo-request": ["icmp", "echo"],  # noqa: F601
     "ntp": ["udp", "ntp"],
     "nntp": ["tcp", "nntp"],
     "http": ["tcp", "http"],
     "https": ["tcp", "https"],
     "smtp": ["tcp", "smtp"],
     "syslog": ["udp", "syslog"],
-    "echo-request": ["icmp", "echo"],  # noqa: F601
     "domain-udp": ["udp", "domain"],
     "domain-tcp": ["tcp", "domain"],
     "smb": ["tcp", "netbios-ssn"],
@@ -175,7 +173,7 @@ def chpoint_policy(file: str, vendor: str):
             if "Any" in policy_src_address:
                 policy_src_address = "all"
             if "Any" in policy_dst_address:
-                policy_dst_address == "all"
+                policy_dst_address = "all"
             if policy_app == "Any":
                 policy_app = "ALL"
 
@@ -198,7 +196,7 @@ def chpoint_policy(file: str, vendor: str):
             if "Any" in policy_src_address:
                 policy_src_address = "any"
             if "Any" in policy_dst_address:
-                policy_dst_address == "any"
+                policy_dst_address = "any"
             if policy_app == "Any":
                 policy_app = "any"
             asa = AsaDst()
@@ -233,7 +231,7 @@ def chpoint_policy(file: str, vendor: str):
             if "Any" in policy_src_address:
                 policy_src_address = "any"
             if "Any" in policy_dst_address:
-                policy_dst_address == "any"
+                policy_dst_address = "any"
             if policy_app == "Any":
                 policy_app = "any"
             srx = SrxDst()

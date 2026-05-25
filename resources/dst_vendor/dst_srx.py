@@ -142,8 +142,8 @@ class SrxDst(VendorAbc):
                 output.write("edit security policies\n\n")
             if source_zone == "global" and destination_zone == "global":
                 output.write(f"set global policy {policy_name} match source-address [ {policy_src_address} ]\n")
-                output.write(f"set global policy {policy_name} match destination-address [ {policy_src_address} ]\n")
-                output.write(f"set global policy {policy_name} match application [ {policy_src_address} ]\n")
+                output.write(f"set global policy {policy_name} match destination-address [ {policy_dst_address} ]\n")
+                output.write(f"set global policy {policy_name} match application [ {policy_app} ]\n")
                 if policy_log:
                     output.write(f"set global policy {policy_name} then log session-close session-init \n")
                 output.write(f"set global policy {policy_name} then  {policy_action} \n\n")

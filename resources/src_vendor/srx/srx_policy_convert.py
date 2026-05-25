@@ -193,7 +193,7 @@ def srx_policy(file: str, vendor: str):
                     if vendor == "forti" and "junos" in policy_app:
                         policy_app = forti_translation.get(policy_app, policy_app)
                     elif vendor == "palo" and "junos" in policy_app:
-                        policy_app == palo_translation.get(policy_app, policy_app)
+                        policy_app = palo_translation.get(policy_app, policy_app)
                     elif vendor == "chpoint" and "junos" in policy_app:
                         policy_app = chpoint_translation.get(policy_app, policy_app)
                     elif vendor == "asa" and "junos" in policy_app:
