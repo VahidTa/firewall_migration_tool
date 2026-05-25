@@ -1,16 +1,17 @@
 import os
 
+from resources.dst_vendor.data_objects import AddressData, AddressSetData, PolicyData, ServiceData, ServiceSetData
 from resources.dst_vendor.vendor_abc import VendorAbc
 
 
 class PaloDst(VendorAbc):
-    def service(*args):
-        application_name = args[1]
-        destination_port = args[2]
-        source_port = args[3]
-        application_protocol = args[4]
-        application_desc = args[5]
-        app_session_ttl = args[6]
+    def service(self, data: ServiceData):
+        application_name = data.application_name
+        destination_port = data.destination_port
+        source_port = data.source_port
+        application_protocol = data.application_protocol
+        application_desc = data.application_desc
+        app_session_ttl = data.app_session_ttl
 
         with open("exported/palo/services.txt", "a") as f:
             if destination_port:
@@ -24,18 +25,18 @@ class PaloDst(VendorAbc):
                     f"set service {application_name} protocol {application_protocol} override yes timeout {app_session_ttl}\n\n"
                 )
 
-    def service_set(*args):
-        app_set_name = args[1]
-        app_name = args[2]
+    def service_set(self, data: ServiceSetData):
+        app_set_name = data.app_set_name
+        app_name = data.app_name or ""
 
         with open("exported/palo/service_group.txt", "a") as f:
             f.write(f"set service-group {app_set_name} members [ {app_name} ]\n\n")
 
-    def address(*args):
-        address_name = args[1]
-        address_ip = args[2]
-        address_desc = args[3]
-        address_type = args[4] or "subnet"
+    def address(self, data: AddressData):
+        address_name = data.address_name
+        address_ip = data.address_ip
+        address_desc = data.address_desc
+        address_type = data.address_type or "subnet"
 
         with open("exported/palo/addresses.txt", "a") as f:
             if address_type == "range":
@@ -48,10 +49,10 @@ class PaloDst(VendorAbc):
             if address_desc:
                 f.write(f'set address {address_name} description "{address_desc}"\n\n')
 
-    def address_set(*args):
-        address_set_name = args[1]
-        address_name = args[2]
-        address_set_desc = args[3]
+    def address_set(self, data: AddressSetData):
+        address_set_name = data.address_set_name
+        address_name = data.address_name
+        address_set_desc = data.address_set_desc
 
         if " " in address_set_name:
             address_set_name = f'"{address_set_name}"'
@@ -61,16 +62,16 @@ class PaloDst(VendorAbc):
             if address_set_desc:
                 f.write(f'set address-group {address_set_name} description "{address_set_desc}"\n\n')
 
-    def policy(*args):
-        policy_name = args[1]
-        source_zone = args[2]
-        destination_zone = args[3]
-        policy_src_address = args[4]
-        policy_dst_address = args[5]
-        policy_app = args[6]
-        policy_log = args[7]
-        policy_state = args[8]
-        policy_action = args[9]
+    def policy(self, data: PolicyData):
+        policy_name = data.policy_name
+        source_zone = data.source_zone
+        destination_zone = data.destination_zone
+        policy_src_address = data.policy_src_address
+        policy_dst_address = data.policy_dst_address
+        policy_app = data.policy_app
+        policy_log = data.policy_log
+        policy_state = data.policy_state
+        policy_action = data.policy_action
 
         the_path = "exported/palo/policies.txt"
         with open(the_path, "a") as output:

@@ -2,6 +2,7 @@ import os
 
 import pandas as pd
 
+from resources.dst_vendor.data_objects import AddressData
 from resources.dst_vendor.dst_asa import AsaDst
 from resources.dst_vendor.dst_forti import FortiDst
 from resources.dst_vendor.dst_palo import PaloDst
@@ -51,13 +52,21 @@ class ChPointCfg:
                 continue
 
             if self.vendor == "forti":
-                forti.address(address_name, address_ip, address_description)
+                forti.address(
+                    AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                )
             elif self.vendor == "asa":
-                asa.address(address_name, address_ip, address_description, None)
+                asa.address(
+                    AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                )
             elif self.vendor == "palo":
-                palo.address(address_name, address_ip, address_description, None)
+                palo.address(
+                    AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                )
             elif self.vendor == "srx":
-                srx.address(address_name, address_ip, address_description, None)
+                srx.address(
+                    AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                )
 
     @property
     def policy(self):

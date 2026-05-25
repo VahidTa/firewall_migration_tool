@@ -1,3 +1,4 @@
+from resources.dst_vendor.data_objects import AddressData, AddressSetData, PolicyData, ServiceData, ServiceSetData
 from resources.dst_vendor.vendor_abc import VendorAbc
 from resources.ip_address_converter.netmask_convereter import nethost, netmasker
 
@@ -15,15 +16,15 @@ protocol_mapper = {
 
 
 class AsaDst(VendorAbc):
-    def service(*args):
-        application_name = args[1]
-        destination_port = args[2]
-        source_port = args[3]
-        application_protocol = args[4]
-        application_desc = args[5]
-        protocol_number = args[6]
-        icmp_code = args[7]
-        icmp_type = args[8]
+    def service(self, data: ServiceData):
+        application_name = data.application_name
+        destination_port = data.destination_port
+        source_port = data.source_port
+        application_protocol = data.application_protocol
+        application_desc = data.application_desc
+        protocol_number = data.protocol_number
+        icmp_code = data.icmp_code
+        icmp_type = data.icmp_type
 
         if " " in application_name:
             application_name = f'"{application_name}"'
@@ -60,10 +61,10 @@ class AsaDst(VendorAbc):
                 f.write(f"description {application_desc} \n")
             f.write("exit\n\n")
 
-    def service_set(*args):
-        app_set_name = args[1]
-        app_list = args[2]
-        app_set_desc = args[3]
+    def service_set(self, data: ServiceSetData):
+        app_set_name = data.app_set_name
+        app_list = data.app_list or []
+        app_set_desc = data.app_set_desc
 
         if " " in app_set_name:
             app_set_name = f'"{app_set_name}"'
@@ -82,11 +83,11 @@ class AsaDst(VendorAbc):
                 f.write(f"description {app_set_desc} \n")
             f.write("exit\n\n")
 
-    def address(*args):
-        address_name = args[1]
-        address_ip = args[2]
-        address_desc = args[3]
-        address_type = args[4] or ""
+    def address(self, data: AddressData):
+        address_name = data.address_name
+        address_ip = data.address_ip
+        address_desc = data.address_desc
+        address_type = data.address_type or ""
 
         with open("exported/asa/object_network.txt", "a") as f:
             if address_type == "fqdn":
@@ -107,10 +108,10 @@ class AsaDst(VendorAbc):
             f.write(f"{address_netmask}\n")
             f.write("exit\n\n")
 
-    def address_set(*args):
-        address_set_name = args[1]
-        address_name_list = args[2]
-        address_set_desc = args[3]
+    def address_set(self, data: AddressSetData):
+        address_set_name = data.address_set_name
+        address_name_list = data.address_name_list
+        address_set_desc = data.address_set_desc
 
         with open("exported/asa/object_group_network.txt", "a") as f:
             f.write(f"object-group network {address_set_name}\n")
@@ -120,18 +121,14 @@ class AsaDst(VendorAbc):
                 f.write(f"network-object object {address_name}\n")
             f.write("exit\n\n")
 
-    def policy(*args):
-        """Not Implemented"""
-        # policy_name = args[1]
-        # source_zone = args[2]
-        # destination_zone = args[3]
-        policy_src_address = args[4]
-        policy_dst_address = args[5]
-        policy_app = args[6]
-        policy_log = args[7]
-        policy_state = args[8]
-        policy_action = args[9]
-        policy_id = args[10]
+    def policy(self, data: PolicyData):
+        policy_src_address = data.policy_src_address
+        policy_dst_address = data.policy_dst_address
+        policy_app = data.policy_app
+        policy_log = data.policy_log
+        policy_state = data.policy_state
+        policy_action = data.policy_action
+        policy_id = data.policy_id
 
         the_path = "exported/asa/policies.txt"
         if policy_state != "inactive":

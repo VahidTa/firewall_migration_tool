@@ -4,6 +4,7 @@ import os
 
 import xmltodict
 
+from resources.dst_vendor.data_objects import PolicyData
 from resources.dst_vendor.dst_asa import AsaDst
 from resources.dst_vendor.dst_chpoint import ChPointDst
 from resources.dst_vendor.dst_forti import FortiDst
@@ -285,46 +286,52 @@ def srx_policy(file: str, vendor: str):
 
                 forti = FortiDst()
                 forti.policy(
-                    policy_name,
-                    source_zone,
-                    destination_zone,
-                    policy_src_address,
-                    policy_dst_address,
-                    policy_app,
-                    policy_log,
-                    policy_state,
-                    policy_action,
-                    policy_id,
+                    PolicyData(
+                        policy_name=policy_name,
+                        source_zone=source_zone,
+                        destination_zone=destination_zone,
+                        policy_src_address=policy_src_address,
+                        policy_dst_address=policy_dst_address,
+                        policy_app=policy_app,
+                        policy_log=policy_log,
+                        policy_state=policy_state,
+                        policy_action=policy_action,
+                        policy_id=policy_id,
+                    )
                 )
 
             elif vendor == "asa":
                 policy_action = asa_translation.get(policy_action, policy_action)
                 asa = AsaDst()
                 asa.policy(
-                    policy_name,
-                    source_zone,
-                    destination_zone,
-                    policy_src_address,
-                    policy_dst_address,
-                    policy_app,
-                    policy_log,
-                    policy_state,
-                    policy_action,
-                    policy_id,
+                    PolicyData(
+                        policy_name=policy_name,
+                        source_zone=source_zone,
+                        destination_zone=destination_zone,
+                        policy_src_address=policy_src_address,
+                        policy_dst_address=policy_dst_address,
+                        policy_app=policy_app,
+                        policy_log=policy_log,
+                        policy_state=policy_state,
+                        policy_action=policy_action,
+                        policy_id=policy_id,
+                    )
                 )
             elif vendor == "palo":
                 policy_action = palo_translation.get(policy_action, policy_action)
                 palo = PaloDst()
                 palo.policy(
-                    policy_name,
-                    source_zone,
-                    destination_zone,
-                    policy_src_address,
-                    policy_dst_address,
-                    policy_app,
-                    policy_log,
-                    policy_state,
-                    policy_action,
+                    PolicyData(
+                        policy_name=policy_name,
+                        source_zone=source_zone,
+                        destination_zone=destination_zone,
+                        policy_src_address=policy_src_address,
+                        policy_dst_address=policy_dst_address,
+                        policy_app=policy_app,
+                        policy_log=policy_log,
+                        policy_state=policy_state,
+                        policy_action=policy_action,
+                    )
                 )
 
             elif vendor == "chpoint":
@@ -363,17 +370,19 @@ def srx_policy(file: str, vendor: str):
 
                 chpoint = ChPointDst()
                 chpoint.policy(
-                    policy_name,
-                    source_zone,
-                    destination_zone,
-                    policy_src_address,
-                    policy_dst_address,
-                    policy_app,
-                    policy_log,
-                    policy_state,
-                    policy_action,
-                    policy_id,
-                    position,
+                    PolicyData(
+                        policy_name=policy_name,
+                        source_zone=source_zone,
+                        destination_zone=destination_zone,
+                        policy_src_address=policy_src_address,
+                        policy_dst_address=policy_dst_address,
+                        policy_app=policy_app,
+                        policy_log=policy_log,
+                        policy_state=policy_state,
+                        policy_action=policy_action,
+                        policy_id=policy_id,
+                        position=position,
+                    )
                 )
 
                 position += 1
