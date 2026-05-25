@@ -4,6 +4,7 @@ import os
 
 import pandas as pd
 
+from resources.dst_vendor.data_objects import PolicyData
 from resources.dst_vendor.dst_asa import AsaDst
 from resources.dst_vendor.dst_forti import FortiDst
 from resources.dst_vendor.dst_palo import PaloDst
@@ -179,16 +180,18 @@ def chpoint_policy(file: str, vendor: str):
 
             forti = FortiDst()
             forti.policy(
-                policy_name,
-                source_zone,
-                destination_zone,
-                policy_src_address,
-                policy_dst_address,
-                policy_app,
-                policy_log,
-                policy_state,
-                policy_action,
-                policy_id,
+                PolicyData(
+                    policy_name=policy_name,
+                    source_zone=source_zone,
+                    destination_zone=destination_zone,
+                    policy_src_address=policy_src_address,
+                    policy_dst_address=policy_dst_address,
+                    policy_app=policy_app,
+                    policy_log=policy_log,
+                    policy_state=policy_state,
+                    policy_action=policy_action,
+                    policy_id=policy_id,
+                )
             )
 
         elif vendor == "asa":
@@ -201,30 +204,34 @@ def chpoint_policy(file: str, vendor: str):
                 policy_app = "any"
             asa = AsaDst()
             asa.policy(
-                policy_name,
-                source_zone,
-                destination_zone,
-                policy_src_address,
-                policy_dst_address,
-                policy_app,
-                policy_log,
-                policy_state,
-                policy_action,
-                policy_id,
+                PolicyData(
+                    policy_name=policy_name,
+                    source_zone=source_zone,
+                    destination_zone=destination_zone,
+                    policy_src_address=policy_src_address,
+                    policy_dst_address=policy_dst_address,
+                    policy_app=policy_app,
+                    policy_log=policy_log,
+                    policy_state=policy_state,
+                    policy_action=policy_action,
+                    policy_id=policy_id,
+                )
             )
         elif vendor == "palo":
             policy_action = palo_translation.get(policy_action, policy_action)
             palo = PaloDst()
             palo.policy(
-                policy_name,
-                source_zone,
-                destination_zone,
-                policy_src_address,
-                policy_dst_address,
-                policy_app,
-                policy_log,
-                policy_state,
-                policy_action,
+                PolicyData(
+                    policy_name=policy_name,
+                    source_zone=source_zone,
+                    destination_zone=destination_zone,
+                    policy_src_address=policy_src_address,
+                    policy_dst_address=policy_dst_address,
+                    policy_app=policy_app,
+                    policy_log=policy_log,
+                    policy_state=policy_state,
+                    policy_action=policy_action,
+                )
             )
         elif vendor == "srx":
             policy_action = srx_translation.get(policy_action, policy_action)
@@ -236,13 +243,15 @@ def chpoint_policy(file: str, vendor: str):
                 policy_app = "any"
             srx = SrxDst()
             srx.policy(
-                policy_name,
-                source_zone,
-                destination_zone,
-                policy_src_address,
-                policy_dst_address,
-                policy_app,
-                policy_log,
-                policy_state,
-                policy_action,
+                PolicyData(
+                    policy_name=policy_name,
+                    source_zone=source_zone,
+                    destination_zone=destination_zone,
+                    policy_src_address=policy_src_address,
+                    policy_dst_address=policy_dst_address,
+                    policy_app=policy_app,
+                    policy_log=policy_log,
+                    policy_state=policy_state,
+                    policy_action=policy_action,
+                )
             )

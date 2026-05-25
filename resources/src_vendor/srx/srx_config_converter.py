@@ -4,6 +4,7 @@ import os
 
 import xmltodict
 
+from resources.dst_vendor.data_objects import AddressData, AddressSetData, ServiceData, ServiceSetData
 from resources.dst_vendor.dst_asa import AsaDst
 from resources.dst_vendor.dst_chpoint import ChPointDst
 from resources.dst_vendor.dst_forti import FortiDst
@@ -57,25 +58,38 @@ class SrxCfg:
 
             if self.vendor == "forti":
                 forti.service(
-                    application_name, destination_port, source_port, application_protocol, application_desc, session_ttl
+                    ServiceData(
+                        application_name=application_name,
+                        destination_port=destination_port,
+                        source_port=source_port,
+                        application_protocol=application_protocol,
+                        application_desc=application_desc,
+                        app_session_ttl=session_ttl,
+                    )
                 )
             elif self.vendor == "asa":
                 asa.service(
-                    application_name,
-                    destination_port,
-                    source_port,
-                    application_protocol,
-                    application_desc,
-                    None,
-                    None,
-                    None,
+                    ServiceData(
+                        application_name=application_name,
+                        destination_port=destination_port,
+                        source_port=source_port,
+                        application_protocol=application_protocol,
+                        application_desc=application_desc,
+                    )
                 )
 
             elif self.vendor == "palo":
                 if session_ttl == "never":
                     session_ttl = False
                 palo.service(
-                    application_name, destination_port, source_port, application_protocol, application_desc, session_ttl
+                    ServiceData(
+                        application_name=application_name,
+                        destination_port=destination_port,
+                        source_port=source_port,
+                        application_protocol=application_protocol,
+                        application_desc=application_desc,
+                        app_session_ttl=session_ttl,
+                    )
                 )
 
             elif self.vendor == "chpoint":
@@ -88,7 +102,14 @@ class SrxCfg:
                     application_name = "custom_" + application_name
 
                 chpoint.service(
-                    application_name, destination_port, source_port, application_protocol, application_desc, session_ttl
+                    ServiceData(
+                        application_name=application_name,
+                        destination_port=destination_port,
+                        source_port=source_port,
+                        application_protocol=application_protocol,
+                        application_desc=application_desc,
+                        app_session_ttl=session_ttl,
+                    )
                 )
 
     @property
@@ -122,13 +143,21 @@ class SrxCfg:
                 app_name = " ".join(app_list)
 
             if self.vendor == "forti":
-                forti.service_set(app_set_name, app_name, app_set_desc)
+                forti.service_set(
+                    ServiceSetData(app_set_name=app_set_name, app_set_desc=app_set_desc, app_name=app_name)
+                )
             elif self.vendor == "asa":
-                asa.service_set(app_set_name, app_list, app_set_desc)
+                asa.service_set(ServiceSetData(app_set_name=app_set_name, app_set_desc=app_set_desc, app_list=app_list))
             elif self.vendor == "palo":
-                palo.service_set(app_set_name, app_name)
+                palo.service_set(
+                    ServiceSetData(app_set_name=app_set_name, app_set_desc=app_set_desc, app_name=app_name)
+                )
             elif self.vendor == "chpoint":
-                chpoint.address_set(app_set_name, app_list, app_set_desc)
+                chpoint.address_set(
+                    AddressSetData(
+                        address_set_name=app_set_name, address_name_list=app_list, address_set_desc=app_set_desc
+                    )
+                )
 
     @property
     def address(self):
@@ -175,9 +204,15 @@ class SrxCfg:
                         address_name = address_list[i][0]
                         address_description = address_list[i][1]
                         address_ip = address_list[i][2]
-                        forti.address(address_name, address_ip, address_description)
+                        forti.address(
+                            AddressData(
+                                address_name=address_name, address_ip=address_ip, address_desc=address_description
+                            )
+                        )
                 else:
-                    forti.address(address_name, address_ip, address_description)
+                    forti.address(
+                        AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                    )
 
             elif self.vendor == "asa":
                 if address_list:
@@ -185,9 +220,15 @@ class SrxCfg:
                         address_name = address_list[i][0]
                         address_description = address_list[i][1]
                         address_ip = address_list[i][2]
-                        asa.address(address_name, address_ip, address_description, None)
+                        asa.address(
+                            AddressData(
+                                address_name=address_name, address_ip=address_ip, address_desc=address_description
+                            )
+                        )
                 else:
-                    asa.address(address_name, address_ip, address_description, None)
+                    asa.address(
+                        AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                    )
 
             elif self.vendor == "palo":
                 if address_list:
@@ -195,9 +236,15 @@ class SrxCfg:
                         address_name = address_list[i][0]
                         address_description = address_list[i][1]
                         address_ip = address_list[i][2]
-                        palo.address(address_name, address_ip, address_description, None)
+                        palo.address(
+                            AddressData(
+                                address_name=address_name, address_ip=address_ip, address_desc=address_description
+                            )
+                        )
                 else:
-                    palo.address(address_name, address_ip, address_description, None)
+                    palo.address(
+                        AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                    )
 
             elif self.vendor == "chpoint":
                 if address_list:
@@ -205,9 +252,15 @@ class SrxCfg:
                         address_name = address_list[i][0]
                         address_description = address_list[i][1]
                         address_ip = address_list[i][2]
-                        chpoint.address(address_name, address_ip, address_description)
+                        chpoint.address(
+                            AddressData(
+                                address_name=address_name, address_ip=address_ip, address_desc=address_description
+                            )
+                        )
                 else:
-                    chpoint.address(address_name, address_ip, address_description)
+                    chpoint.address(
+                        AddressData(address_name=address_name, address_ip=address_ip, address_desc=address_description)
+                    )
 
         if address_set_books:
             for index in range(len(address_set_books)):
@@ -233,13 +286,39 @@ class SrxCfg:
                 address_name = " ".join(address_name_list)
 
                 if self.vendor == "forti":
-                    forti.address_set(address_set_name, address_name, address_set_desc)
+                    forti.address_set(
+                        AddressSetData(
+                            address_set_name=address_set_name,
+                            address_name_list=address_name_list,
+                            address_set_desc=address_set_desc,
+                            address_name=address_name,
+                        )
+                    )
                 elif self.vendor == "asa":
-                    asa.address_set(address_set_name, address_name_list, address_set_desc)
+                    asa.address_set(
+                        AddressSetData(
+                            address_set_name=address_set_name,
+                            address_name_list=address_name_list,
+                            address_set_desc=address_set_desc,
+                        )
+                    )
                 elif self.vendor == "palo":
-                    palo.address_set(address_set_name, address_name, address_set_desc)
+                    palo.address_set(
+                        AddressSetData(
+                            address_set_name=address_set_name,
+                            address_name_list=address_name_list,
+                            address_set_desc=address_set_desc,
+                            address_name=address_name,
+                        )
+                    )
                 elif self.vendor == "chpoint":
-                    chpoint.address_set(address_set_name, address_name_list, address_set_desc)
+                    chpoint.address_set(
+                        AddressSetData(
+                            address_set_name=address_set_name,
+                            address_name_list=address_name_list,
+                            address_set_desc=address_set_desc,
+                        )
+                    )
 
     @property
     def policy(self):
