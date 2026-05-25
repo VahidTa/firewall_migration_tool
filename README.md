@@ -7,7 +7,7 @@ The Fwmig tool helps you migrate from one firewall to another using simple copy-
 - Offline Operation: The application runs self-contained without requiring an internet connection once started.
 - Container-Ready: Includes a Dockerfile for straightforward deployment in containerized environments.
 - Built-in Logging: Implements comprehensive logging to simplify troubleshooting.
-- Python Compatibility: Fully tested and compatible with Python versions 3.9, 3.10, 3.11, 3.12, and 3.13.
+- Python Compatibility: Fully tested and compatible with Python versions 3.10, 3.11, 3.12, and 3.13.
 
 ----
 ## Run the code:
