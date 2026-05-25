@@ -4,3 +4,4 @@ pandas==2.3.2
 paramiko==2.7.2
 requests==2.25.1
 xmltodict==0.12.0
+PyYAML==6.0.3

@@ -98,7 +98,7 @@ def main():
 def get_file(dirname):
     dloads_dir = f"exported/{dirname}"
     dloads = os.listdir(dloads_dir)
-    dloads_src = [f"/exported/{dirname}/{format(i)}" for i in dloads]
+    dloads_src = [f"/exported/{dirname}/{i}" for i in dloads]
     return render_template("files.html", dloads=dloads, dloads_src=dloads_src, dirname=dirname)
 
 
@@ -111,9 +111,9 @@ def download(dirname, filename):
 def exported():
     dloads_dir = "exported/"
     dloads = os.listdir(dloads_dir)
-    dloads_src = [f"/exported/{format(i)}" for i in dloads]
+    dloads_src = [f"/exported/{i}" for i in dloads]
     return render_template("exported_vendor.html", dloads=dloads, dloads_src=dloads_src)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=8000)
