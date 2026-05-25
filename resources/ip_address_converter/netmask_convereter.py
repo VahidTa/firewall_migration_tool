@@ -2,16 +2,18 @@ from ipaddress import IPv4Network
 
 
 def netmasker(prefix):
-    return str(IPv4Network(prefix).network_address) + " " + str(IPv4Network(prefix).netmask)
+    net = IPv4Network(prefix, strict=False)
+    return f"{net.network_address} {net.netmask}"
 
 
 def nethost(prefix):
-    return str(IPv4Network(prefix).network_address)
+    return str(IPv4Network(prefix, strict=False).network_address)
 
 
 def sub_mask(prefix):
-    return str(IPv4Network(prefix).netmask)
+    return str(IPv4Network(prefix, strict=False).netmask)
 
 
 def prefixer(prefix):
-    return str(IPv4Network(prefix).network_address) + "/" + str(IPv4Network(prefix).prefixlen)
+    net = IPv4Network(prefix, strict=False)
+    return f"{net.network_address}/{net.prefixlen}"
