@@ -12,7 +12,7 @@ Bash
 - Activate the virtual env: ``source .venv/bin/activate``
 - Use ``pip install -r requirements.txt`` to install required packages
 - Start the app using ``python app.py``
-- Connect to ``http://localhost:5000`` on browser.
+- Connect to ``http://localhost:8008`` on browser.
 
 Container
 *********
@@ -24,7 +24,7 @@ Container
     :linenos:
 
     docker build -t fwmig:latest
-    docker run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
+    docker run -p 8080:8008 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
 
 - To build and run container using Podman:
 
@@ -32,6 +32,6 @@ Container
     :linenos:
 
     podman build -t fwmig:latest
-    podman run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
+    podman run -p 8080:8008 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
 
 - Connect to ``http://127.0.0.1:8080`` on browser.
