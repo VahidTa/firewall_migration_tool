@@ -30,14 +30,14 @@ For Docker:
 
 ```sh
 docker build -t fwmig .
-docker run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
+docker run -p 8080:8008 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
 ```
 
 For Podman:
 
 ```sh
 podman build -t fwmig .
-podman run -p 8080:5000 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
+podman run -p 8080:8008 --name=fwmig -d -v $(pwd)/logs:/code/logs/ -ti fwmig:latest
 ```
 
 -----
