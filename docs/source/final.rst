@@ -1,72 +1,73 @@
 After Conversion
 ################
 
-After successfull conversion of source config, based on destination vendor you were selected you must follow reagarding steps.
+After successfully converting your source configuration, follow the instructions below for your selected destination vendor:
 
 
 Cisco ASA
 *********
 
-Cisco ASA policy works only for global policy.
+Cisco ASA policy conversion currently applies to global access lists.
 
-- Login to the device
-- Enter to global config mode
-- You must copy/paste configuration first and then configuration.
-- Each .txt file contains related configuration.
+- Log in to the device.
+- Enter global configuration mode (``configure terminal``).
+- You must copy/paste configuration first and then the policy.
+- Each generated ``.txt`` file contains the respective configuration section.
 
 
-Checkpoint
-**********
+Check Point
+***********
 
-* It supports from release R80 and later.
-* API must be enabled. Please refer to Checkpoint documentation. 
-* Network and Service Objects will force to replace if there is existing object with the same name.
-* For objects, login to the device and go to expert mode
-* Use these steps:
+* Supports Check Point R80 and later releases.
+* The Management API must be enabled (refer to Check Point documentation).
+* Network and service objects will overwrite existing objects with the same name (via ``set-if-exists``).
+* For objects, log in to the device and enter expert mode.
+* Run the batch commands in the following order:
 
     .. code-block:: bash
         :linenos:
-    
-        mgmt_cli add host --batch network_objects_host.csv #Host objects
-        mgmt_cli add network --batch network_objects_network.csv #Network with subnets
-        mgmt_cli add group --batch network_groups.csv #Object group objects
-        mgmt_cli set group --batch network_group_members.csv #Object group members
-        mgmt_cli add service-group --batch service_groups.csv #Service group members
-        mgmt_cli set service-group --batch service_groups_members.csv #Service group members
 
-* For Policies:
-    * Set ``username`` and ``password`` inside the ``policies.txt``.
-    * Login to the decvice and go to expert mode. Then paste output policy.
-    * This method is using `sid` for authentication.
-    * Because of the platform limitations, you must paste rules by grouping 3 or 4 rules for each copy.
-    * Please note that about per 100 lines there is a ``publish`` action.
+        mgmt_cli add host --batch network_objects_host.csv                 # Host objects
+        mgmt_cli add network --batch network_objects_network.csv           # Network with subnets
+        mgmt_cli add group --batch network_groups.csv                      # Object groups
+        mgmt_cli set group --batch network_group_members.csv               # Object group members
+        mgmt_cli add service-group --batch service_groups.csv              # Service groups
+        mgmt_cli set service-group --batch service_groups_members.csv      # Service group members
+
+* For policies:
+    * Set your ``username`` and ``password`` inside ``policies.txt``.
+    * Log in to the device, enter expert mode, and paste the generated policy commands.
+    * This script uses a session ID (``sid``) for API authentication.
+    * Due to CLI limitations, paste rules in batches of 3 to 4 at a time.
+    * A ``publish`` command is automatically included approximately every 100 lines.
 
 
-Fortigate
+FortiGate
 *********
 
-Because of the platform limitations, Policy names will be support upto 35 charachters. So, if there is a policy name with more than 35 charachter length will be convert to only first 35 characters.
+Due to FortiOS limitations, policy names support a maximum of 35 characters. Any policy name exceeding 35 characters is automatically truncated to the first 35 characters.
 
-* Login to the device
+* Log in to the device.
 * You must copy/paste configuration first and then the policy.
+
 
 Palo Alto
 *********
 
-May not allow more than 30 inputs in one copy/paste. So partition the output in clipboard.
+The PAN-OS CLI may not accept more than 30 commands per paste; partition the output into smaller batches from your clipboard.
 
-* Login to the device
-* Enter to config mode
+* Log in to the device.
+* Enter configuration mode (``configure``).
 * You must copy/paste configuration first and then the policy.
-* Commit the configuration at the end
+* Commit the configuration at the end (``commit``).
 
 
 Juniper SRX
 ***********
 
-For SRX, output file is "set" based.
+For SRX, the generated output consists of Junos ``set`` commands.
 
-* Login to the device
-* Enter to config mode
+* Log in to the device.
+* Enter configuration mode (``configure``).
 * You must copy/paste configuration first and then the policy.
-* Commit the configuration at the end
+* Commit the configuration at the end (``commit``).

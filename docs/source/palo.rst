@@ -1,27 +1,27 @@
-Palo Alto conversion
+Palo Alto Conversion
 ####################
 
-As Palo alto supports XML output format, here is the steps for getting config and policy fro PAN-OS:
+Since Palo Alto PAN-OS supports an XML output format, here are the steps for exporting configuration and policy files:
 
-File Base
-*********
+File-based Conversion
+*********************
 
-**Policy and Config**
+**Policy and Configuration**
 
-- Login to PAN-OS through cli or console.
-- Execute ``set cli config-output-format xml`` command
-- Enter to config mode with ``configure``
-- Execute ``show`` command
-- Copy the output into file 
-- Supported file extensions is .log and .txt
-- Because of Palo Alto XML formatted that is not standard, it is important to wrap up entire output with <root> and </root> tag.
+- Log in to PAN-OS via the CLI or console.
+- Run the command: ``set cli config-output-format xml``.
+- Enter configuration mode by running ``configure``.
+- Run the ``show`` command.
+- Copy the output into a file.
+- Supported file extensions are ``.log`` and ``.txt``.
+- Because the PAN-OS XML output does not contain a single root element, you must wrap the entire output in ``<root>`` and ``</root>`` tags.
 
 .. image:: _static/palo/config_correction.png
     :align: center
 
 |
 
-Final step
+Final Step
 **********
 
-Got to `After conversion <final.html>`_ 
+Go to `After conversion <final.html>`_.

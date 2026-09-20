@@ -1,20 +1,20 @@
-Checkpoint conversion
+Check Point Conversion
 ######################
 
-It is tested on SmartConsle **CSV**  policy and address object exporting format.
-Because of insufficient information on csv output, Service part does not have protocol part to understand wheter it is TCP/UDP and Service conversion not implemented yet.
+Tested on Check Point SmartConsole **CSV** export files for security policies and network objects.
+Note: Because SmartConsole CSV exports lack transport protocol identifiers (TCP vs. UDP), service object conversion from Check Point is currently not supported.
 
 |
 
-File Base
-*********
+File-based Conversion
+*********************
 
-Here are steps to provide correct output file from Check Point:
+Here are the steps to export the required CSV files from Check Point:
 
-**Policy**:
+**Policies**:
 
-- Login to SmartConsole, go to **Security Policies**.
-- Click on actions and select export.
+- Log in to SmartConsole and go to **Security Policies**.
+- Click **Actions** and select **Export**.
 
 .. image:: _static/chpoint/ch_policy.png
     :align: center
@@ -23,16 +23,16 @@ Here are steps to provide correct output file from Check Point:
 
 **Objects**:
 
-- Login to SmartConsole, on the right panel find 3 dots on toolbar and click.
-- Select Networks and Hosts section from left selection part
-- Click actions and select export.
+- Log in to SmartConsole. In the right panel, click the options menu (... icon) on the toolbar.
+- Select **Networks and Hosts** from the left navigation panel.
+- Click **Actions** and select **Export**.
 
 .. image:: _static/chpoint/configs.png
     :align: center
 
 |
 
-Final step
+Final Step
 **********
 
-Got to `After conversion <final.html>`_ 
+Go to `After conversion <final.html>`_.
