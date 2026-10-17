@@ -1,6 +1,6 @@
 Flask==2.3.3
 ncclient==0.6.15
-pandas==2.3.2
+pandas==2.3.3
 paramiko==2.7.2
 requests==2.33.1
 xmltodict==1.0.2

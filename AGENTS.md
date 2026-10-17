@@ -8,7 +8,7 @@
 
 **Firewall Migration Tool (`fwmig`)** is an offline-capable, web-based network utility written in Python (Flask) designed to simplify migrations between enterprise firewall platforms. It ingests firewall configurations (via file upload or Juniper NETCONF) and translates security policies, network address objects, and service objects into native configuration commands or management files for destination firewalls.
 
-- **Primary Language:** Python (tested and supported on versions `3.10`, `3.11`, `3.12`, `3.13`)
+- **Primary Language:** Python (tested and supported on versions `3.11`, `3.12`, `3.13`, `3.14`)
 - **Web Framework:** Flask
 - **Network / Transport:** `ncclient` (Junos NETCONF), `paramiko`
 - **Data Processing:** `pandas`, `xmltodict`, `PyYAML`
